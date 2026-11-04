@@ -54,7 +54,7 @@ export const site: SiteData = {
         "Improved LLM reliability with model fallbacks and task-specific model selection.",
         "Built an evaluation tool that replays conversations to analyse how persistent LLM memory is generated over time.",
       ],
-      stack: ["TypeScript", "Node.js", "MongoDB Atlas Search", "OAuth", "LLM APIs"],
+      stack: ["MCP", "OAuth", "MFA", "MongoDB Atlas Search", "LLM fallbacks"],
     },
     {
       company: "Protiviti Consulting",

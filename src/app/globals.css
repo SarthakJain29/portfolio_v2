@@ -85,10 +85,13 @@ body {
   color: var(--accent-fg);
 }
 
-:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
-  border-radius: 4px;
+/* In a layer so Tailwind utilities (e.g. focus-visible:outline-none) can override it. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
 }
 
 /* ── Scroll reveal (only when JS is on, so no-JS users still see content) ── */
