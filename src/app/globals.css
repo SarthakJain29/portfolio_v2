@@ -105,6 +105,18 @@ body {
   transform: none;
 }
 
+/* Hero entrance: pure CSS and transform-only (no opacity:0 start), so the LCP
+   text is painted — and counted — on first render instead of waiting for JS. */
+.rise {
+  animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+@keyframes rise {
+  from {
+    transform: translateY(10px);
+  }
+}
+
 /* ── Hero ────────────────────────────────────────────────────────────── */
 .hero-grid {
   background-image: radial-gradient(var(--line) 1px, transparent 1px);

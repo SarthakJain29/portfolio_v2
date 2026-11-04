@@ -52,7 +52,7 @@ export function Header() {
           <button
             type="button"
             onClick={openPalette}
-            aria-label="Open command menu"
+            aria-label="Menu — open command palette"
             aria-keyshortcuts="Control+K Meta+K"
             className="inline-flex h-9 items-center gap-2 rounded-md border border-line px-2.5 text-sm text-muted transition-colors hover:text-fg"
           >

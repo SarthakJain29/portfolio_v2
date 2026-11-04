@@ -2,7 +2,6 @@ import { site } from "@/data/site";
 import { ArrowUpRight, DownloadIcon, GithubIcon, LinkedinIcon, CodeIcon } from "./icons";
 import { HeroSpotlight } from "./hero-spotlight";
 import { HeroTerminal } from "./hero-terminal";
-import { Reveal } from "./reveal";
 
 const social = [
   { label: "GitHub", href: site.profile.socials.github, Icon: GithubIcon },
@@ -16,18 +15,18 @@ export function Hero() {
     <HeroSpotlight>
       <div id="top" className="mx-auto grid min-h-[100svh] w-full max-w-5xl content-center gap-12 px-5 pb-16 pt-28 sm:px-8 lg:grid-cols-[1.15fr_1fr] lg:items-center">
         <div>
-          <Reveal>
+          <div className="rise">
             <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent">
               {profile.role} · {profile.location}
             </p>
-          </Reveal>
-          <Reveal delay={80}>
+          </div>
+          <div className="rise" style={{ "--d": "80ms" } as React.CSSProperties}>
             <h1 className="mt-4 text-5xl font-semibold tracking-tight sm:text-7xl">{profile.name}</h1>
-          </Reveal>
-          <Reveal delay={160}>
+          </div>
+          <div className="rise" style={{ "--d": "160ms" } as React.CSSProperties}>
             <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">{profile.summary}</p>
-          </Reveal>
-          <Reveal delay={240}>
+          </div>
+          <div className="rise" style={{ "--d": "240ms" } as React.CSSProperties}>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a
                 href="#projects"
@@ -49,8 +48,8 @@ export function Hero() {
                 Get in touch <ArrowUpRight />
               </a>
             </div>
-          </Reveal>
-          <Reveal delay={320}>
+          </div>
+          <div className="rise" style={{ "--d": "320ms" } as React.CSSProperties}>
             <ul className="mt-8 flex items-center gap-4 text-muted">
               {social.map(({ label, href, Icon }) => (
                 <li key={label}>
@@ -66,11 +65,11 @@ export function Hero() {
                 </li>
               ))}
             </ul>
-          </Reveal>
+          </div>
         </div>
-        <Reveal delay={200}>
+        <div className="rise" style={{ "--d": "200ms" } as React.CSSProperties}>
           <HeroTerminal />
-        </Reveal>
+        </div>
       </div>
     </HeroSpotlight>
   );

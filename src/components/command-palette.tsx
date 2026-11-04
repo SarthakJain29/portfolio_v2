@@ -212,7 +212,7 @@ export function CommandPalette({
           placeholder="Type a command or search…"
           autoComplete="off"
           spellCheck={false}
-          className="h-12 w-full bg-transparent text-[15px] outline-none placeholder:text-subtle"
+          className="h-12 w-full bg-transparent text-[15px] outline-none focus-visible:outline-none placeholder:text-subtle"
         />
         <kbd className="shrink-0 rounded border border-line px-1.5 py-0.5 font-mono text-[11px] text-subtle">esc</kbd>
       </div>
