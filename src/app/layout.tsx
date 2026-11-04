@@ -1,12 +1,23 @@
 import type { Metadata, Viewport } from "next";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
+import localFont from "next/font/local";
 import { site } from "@/data/site";
 import { getSiteUrl } from "@/lib/site-url";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { Interactions } from "@/components/interactions";
+import { ScrollProgress } from "@/components/scroll-progress";
 import "./globals.css";
+
+// Display serif used only for italic accent words (see .serif in globals.css).
+const serif = localFont({
+  src: "../../node_modules/@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2",
+  weight: "400",
+  style: "italic",
+  variable: "--font-serif-display",
+  display: "swap",
+});
 
 const { profile } = site;
 const title = `${profile.name} — ${profile.role}`;
@@ -42,15 +53,15 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fafaf9" },
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0b" },
+    // Dark is the default theme; the light value only matters if the visitor picked light.
+    { color: "#07070b" },
   ],
   width: "device-width",
   initialScale: 1,
 };
 
-/** Runs before first paint: sets data-theme (stored choice → OS) and the `js` flag. */
-const themeScript = `(function(){try{var d=document.documentElement;d.classList.add('js');var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}d.setAttribute('data-theme',t)}catch(e){document.documentElement.classList.add('js')}})();`;
+/** Runs before first paint: sets data-theme (stored choice, default dark) and the `js` flag. */
+const themeScript = `(function(){try{var d=document.documentElement;d.classList.add('js');var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t='dark'}d.setAttribute('data-theme',t)}catch(e){document.documentElement.classList.add('js')}})();`;
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -65,7 +76,7 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${GeistSans.variable} ${GeistMono.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${GeistSans.variable} ${GeistMono.variable} ${serif.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
@@ -76,6 +87,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Skip to content
         </a>
+        <ScrollProgress />
         <Header />
         <main id="main">{children}</main>
         <Footer />

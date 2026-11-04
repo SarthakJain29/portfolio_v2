@@ -52,7 +52,7 @@ export function Interactions() {
       <CommandPalette notify={notify} confetti={fallback} />
       <div role="status" aria-live="polite" className="pointer-events-none fixed inset-x-0 bottom-6 z-[70] flex justify-center px-4">
         {toast && (
-          <p className="rounded-lg border border-line bg-card px-4 py-2.5 font-mono text-sm shadow-lg">{toast}</p>
+          <p className="rounded-lg border border-line-strong bg-card-solid px-4 py-2.5 font-mono text-sm shadow-lg">{toast}</p>
         )}
       </div>
     </>

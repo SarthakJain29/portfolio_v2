@@ -12,8 +12,6 @@ export type Profile = {
   summary: string;
   /** One-paragraph "about" copy. Each string is rendered as its own paragraph. */
   about: string[];
-  /** Quick facts shown beside the about text. */
-  facts: { label: string; value: string }[];
   socials: {
     github: string;
     linkedin: string;
@@ -21,7 +19,20 @@ export type Profile = {
   };
   /** Served from /public. Add the PDF at public/resume.pdf. */
   resumeUrl: string;
+  /** Short phrases cycled in the hero: "I build ___". Keep them true. */
+  heroWords: string[];
+  /** Phrases inside `about` paragraphs to highlight. */
+  aboutHighlights: string[];
+  /** Shown on the "Now" card. */
+  now: { role: string; company: string; since: string; blurb: string };
+  /** Shown on the location card. */
+  coords: string;
+  /** IANA time zone for the live local-time clock. */
+  timeZone: string;
 };
+
+/** Numbers shown in the animated stat strip. Only use figures from real work. */
+export type Stat = { value: number; suffix?: string; label: string };
 
 export type Experience = {
   company: string;
@@ -75,6 +86,7 @@ export type Achievement = { title: string; detail?: string };
 
 export type SiteData = {
   profile: Profile;
+  stats: Stat[];
   experience: Experience[];
   projects: Project[];
   skills: SkillGroup[];

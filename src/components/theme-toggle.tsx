@@ -11,10 +11,10 @@ function subscribe(notify: () => void) {
   return () => mo.disconnect();
 }
 const getTheme = (): Theme =>
-  document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+  document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
 
 export function useTheme() {
-  const theme = useSyncExternalStore(subscribe, getTheme, () => "light" as Theme);
+  const theme = useSyncExternalStore(subscribe, getTheme, () => "dark" as Theme);
   const setTheme = (t: Theme) => {
     document.documentElement.setAttribute("data-theme", t);
     try {
@@ -35,7 +35,7 @@ export function ThemeToggle() {
       onClick={toggle}
       aria-label={`Switch to ${next} mode`}
       title={`Switch to ${next} mode`}
-      className="inline-flex size-9 items-center justify-center rounded-md border border-line text-muted transition-colors hover:text-fg"
+      className="inline-flex size-9 items-center justify-center rounded-full border border-line bg-card text-muted transition-colors hover:border-line-strong hover:text-fg"
     >
       {/* Both icons exist in the HTML; CSS shows the right one so SSR never flashes the wrong icon. */}
       <SunIcon className="hidden [[data-theme=dark]_&]:block" />

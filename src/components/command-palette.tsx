@@ -193,7 +193,7 @@ export function CommandPalette({
       onClick={(e) => {
         if (e.target === dialogRef.current) close(); // backdrop click
       }}
-      className="palette mx-auto mt-[10vh] w-[min(36rem,calc(100vw-2rem))] overflow-hidden rounded-xl border border-line bg-card p-0 text-fg shadow-2xl"
+      className="palette mx-auto mt-[10vh] w-[min(36rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-line-strong bg-card-solid p-0 text-fg shadow-2xl"
     >
       <div className="flex items-center gap-3 border-b border-line px-4">
         <input

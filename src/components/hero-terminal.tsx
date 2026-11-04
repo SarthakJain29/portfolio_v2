@@ -65,18 +65,19 @@ export function HeroTerminal() {
       </p>
       <div
         aria-hidden
-        className="rounded-xl border border-line bg-card/80 font-mono text-[13px] leading-relaxed shadow-sm backdrop-blur sm:text-sm"
+        className="relative overflow-hidden rounded-2xl border border-line-strong bg-card-solid/85 font-mono text-[13px] leading-relaxed shadow-[0_30px_80px_-30px_var(--glow)] backdrop-blur sm:text-sm lg:text-[15px]"
       >
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[var(--g2)] to-transparent opacity-70" />
         <div className="flex items-center justify-between border-b border-line px-4 py-2.5">
           <div className="flex gap-1.5">
-            <span className="size-2.5 rounded-full bg-line" />
-            <span className="size-2.5 rounded-full bg-line" />
-            <span className="size-2.5 rounded-full bg-line" />
+            <span className="size-2.5 rounded-full bg-[#ff5f57]/80" />
+            <span className="size-2.5 rounded-full bg-[#febc2e]/80" />
+            <span className="size-2.5 rounded-full bg-[#28c840]/80" />
           </div>
           <span className="text-xs text-subtle">reliability.sh</span>
           <span className="w-10" />
         </div>
-        <div className="space-y-1 px-4 py-4">
+        <div className="space-y-2 px-5 py-6 sm:px-7 sm:py-8">
           {LINES.map((l, i) => {
             const { start, duration } = timeline[i]!;
             const local = t - start;

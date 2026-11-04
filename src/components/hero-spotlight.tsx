@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { Meteors } from "./ui/meteors";
 
 /**
  * Soft accent glow that follows the pointer inside the hero.
@@ -30,8 +31,15 @@ export function HeroSpotlight({ children, className = "" }: { children: React.Re
 
   return (
     <div ref={ref} className={`relative isolate overflow-hidden ${className}`}>
-      <div aria-hidden className="hero-spot pointer-events-none absolute inset-0 -z-10" />
-      <div aria-hidden className="hero-grid pointer-events-none absolute inset-0 -z-10" />
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <div className="aurora aurora-a" />
+        <div className="aurora aurora-b" />
+        <div className="hero-beam" />
+        <div className="hero-grid absolute inset-0" />
+        <div className="hero-spot absolute inset-0" />
+        <Meteors />
+        <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-bg to-transparent" />
+      </div>
       {children}
     </div>
   );

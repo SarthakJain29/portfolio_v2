@@ -26,20 +26,31 @@ export const site: SiteData = {
       "These days I'm increasingly focused on GenAI applications and LLM reliability: model fallbacks, task-specific model selection, and tooling that shows how an LLM's behaviour changes over time.",
       "Off the clock I solve problems on LeetCode (300+ and counting) and build side projects, several of them AI-flavoured.",
     ],
-    facts: [
-      { label: "Based in", value: "Hyderabad, India" },
-      { label: "Currently", value: "Software Engineer at Myra AI" },
-      { label: "Focus", value: "Backend, APIs, GenAI & LLM reliability" },
-      { label: "LeetCode", value: "300+ problems solved" },
-    ],
     socials: {
       github: GITHUB,
       linkedin: "https://www.linkedin.com/in/sarthakjain29/",
       leetcode: "https://leetcode.com/u/sarthak_2907/",
     },
+    heroWords: ["reliable APIs", "GenAI applications", "LLM evaluation tools", "real-time apps"],
+    aboutHighlights: ["API design", "LLM reliability", "300+"],
+    now: {
+      role: "Software Engineer",
+      company: "Myra AI",
+      since: "Jan 2026",
+      blurb: "MCP OAuth integrations, LLM fallbacks and evaluation tooling.",
+    },
+    coords: "17.385° N, 78.487° E",
+    timeZone: "Asia/Kolkata",
     // TODO(resume): add your PDF at public/resume.pdf — the button already points here.
     resumeUrl: "/resume.pdf",
   },
+
+  stats: [
+    { value: 500, suffix: "+", label: "users covered by MFA & session revocation" },
+    { value: 45, suffix: "%", label: "faster data retrieval on the role management tool" },
+    { value: 30, suffix: "%", label: "better request performance on REST APIs" },
+    { value: 300, suffix: "+", label: "LeetCode problems solved" },
+  ],
 
   experience: [
     {
