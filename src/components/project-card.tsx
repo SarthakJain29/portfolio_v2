@@ -69,7 +69,7 @@ export function ProjectCard({
     <GlowCard as="article" className="group flex h-full flex-col overflow-hidden">
       <div
         className={`relative shrink-0 overflow-hidden border-line ${
-          featured ? "aspect-[16/10] border-b sm:aspect-[16/7]" : "aspect-[16/9] border-b"
+          featured ? "aspect-[16/10] border-b sm:aspect-[16/7] lg:aspect-[21/8]" : "aspect-[16/9] border-b"
         }`}
       >
         <Image
@@ -77,7 +77,7 @@ export function ProjectCard({
           alt={p.imageAlt}
           width={1200}
           height={750}
-          sizes={featured ? "(min-width: 1024px) 720px, 100vw" : compact ? "320px" : "(min-width: 1024px) 380px, (min-width: 768px) 50vw, 100vw"}
+          sizes={featured ? "(min-width: 1024px) 1100px, 100vw" : compact ? "320px" : "(min-width: 1024px) 560px, (min-width: 768px) 50vw, 100vw"}
           unoptimized={p.image.endsWith(".svg")}
           className="size-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
         />

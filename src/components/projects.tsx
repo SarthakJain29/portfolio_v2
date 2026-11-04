@@ -15,14 +15,14 @@ export function Projects() {
       title={<>Things I&apos;ve <Accent>built</Accent></>}
       lead="Real-time systems, AI tooling and developer utilities, plus what I'm building next."
     >
-      <ul className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      <ul className="grid gap-5 md:grid-cols-2">
         {featured && (
-          <Reveal as="li" className="md:col-span-2 lg:col-span-2">
+          <Reveal as="li" className="md:col-span-2">
             <ProjectCard p={featured} featured />
           </Reveal>
         )}
         {rest.map((p, i) => (
-          <Reveal as="li" key={p.slug} delay={(i % 3) * 80} className={i === 0 ? "lg:col-span-1" : ""}>
+          <Reveal as="li" key={p.slug} delay={(i % 2) * 80}>
             <ProjectCard p={p} />
           </Reveal>
         ))}

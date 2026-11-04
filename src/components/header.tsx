@@ -94,13 +94,13 @@ export function Header() {
           <button
             type="button"
             onClick={openPalette}
-            aria-label="Menu — open command palette"
             aria-keyshortcuts="Control+K Meta+K"
             className="inline-flex h-9 items-center gap-2 rounded-full border border-line bg-card px-3 text-sm text-muted transition-colors hover:border-line-strong hover:text-fg"
           >
             <SearchIcon />
             <span className="hidden sm:inline">Menu</span>
             <kbd className="hidden rounded border border-line px-1.5 font-mono text-[11px] sm:inline">⌘K</kbd>
+            <span className="sr-only">Open command palette</span>
           </button>
           <ThemeToggle />
         </div>
