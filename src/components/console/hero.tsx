@@ -42,20 +42,32 @@ export function Hero() {
               <mark className="rounded bg-yellow px-1 text-[#17171a]">GenAI apps</mark> that keep working when the model doesn&apos;t.
             </p>
             {/* Essentials, always one tap away */}
-            <div className="rise mt-5 flex flex-wrap gap-2.5" style={rise(200)}>
-              <a href={profile.resumeUrl} download className="key key-orange text-sm">
+            <div
+              className="rise mt-5 grid grid-cols-[1fr_1fr_auto_auto] gap-2 sm:flex sm:flex-wrap sm:gap-2.5"
+              style={rise(200)}
+            >
+              <a href={profile.resumeUrl} download className="key key-orange !px-3 text-sm sm:!px-4">
                 <DownloadIcon /> Resume
               </a>
-              <a href={`mailto:${profile.email}`} className="key key-blue text-sm">
-                <MailIcon /> Email me
+              <a href={`mailto:${profile.email}`} className="key key-blue !px-3 text-sm sm:!px-4">
+                <MailIcon /> Email<span className="hidden sm:inline"> me</span>
               </a>
-              <a href={profile.socials.github} target="_blank" rel="noopener noreferrer" className="key !px-3 text-sm" aria-label="GitHub (opens in a new tab)">
+              <a href={profile.socials.github} target="_blank" rel="noopener noreferrer" className="key !px-2.5 text-sm sm:!px-3" aria-label="GitHub (opens in a new tab)">
                 <GithubIcon />
               </a>
-              <a href={profile.socials.linkedin} target="_blank" rel="noopener noreferrer" className="key !px-3 text-sm" aria-label="LinkedIn (opens in a new tab)">
+              <a href={profile.socials.linkedin} target="_blank" rel="noopener noreferrer" className="key !px-2.5 text-sm sm:!px-3" aria-label="LinkedIn (opens in a new tab)">
                 <LinkedinIcon />
               </a>
             </div>
+
+            {/* Desktop: point at the signature so nobody mistakes it for decoration */}
+            <p aria-hidden className="rise mt-8 hidden max-w-sm items-start gap-3 lg:flex" style={rise(260)}>
+              <span className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-full bg-yellow font-mono text-xs font-bold text-[#17171a]">↗</span>
+              <span className="text-sm leading-snug text-ink-2">
+                <strong className="font-semibold text-ink">That console is live.</strong> Switch Gemini off, or hit chaos, and watch the
+                request fall back. It&apos;s the same pattern every project below ships with.
+              </span>
+            </p>
 
             {/* Cartridge slot: top 3 projects */}
             <div className="rise mt-7 lg:mt-auto lg:pt-7" style={rise(240)}>
