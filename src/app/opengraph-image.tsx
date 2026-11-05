@@ -3,18 +3,28 @@ import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { site } from "@/data/site";
 
-export const alt = `${site.profile.name} — ${site.profile.role}`;
+export const alt = `${site.profile.name}: ${site.profile.role}. The SJ-01 Fallback Console portfolio.`;
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
+const COLORS: Record<string, string> = {
+  orange: "#ff5a1f",
+  blue: "#2d5bff",
+  yellow: "#ffc21a",
+  green: "#1fb46a",
+  pink: "#ff7ab6",
+  violet: "#8e6bff",
+};
+
 export default async function OpengraphImage() {
-  const { profile } = site;
-  // Satori needs ttf/otf/woff (not woff2): use the .woff shipped with @fontsource.
-  const root = process.cwd();
-  const [serif, sansRegular, sansBold] = await Promise.all([
-    readFile(join(root, "node_modules/@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff")),
-    readFile(join(root, "node_modules/geist/dist/fonts/geist-sans/Geist-Regular.ttf")),
-    readFile(join(root, "node_modules/geist/dist/fonts/geist-sans/Geist-Bold.ttf")),
+  const { profile, projects } = site;
+  const featured = projects.filter((p) => p.featured).sort((a, b) => (a.featured ?? 9) - (b.featured ?? 9));
+  // Satori needs ttf/otf/woff (not woff2, not variable): static files from @fontsource.
+  const root = join(process.cwd(), "node_modules/@fontsource");
+  const [regular, heavy, pixel] = await Promise.all([
+    readFile(join(root, "bricolage-grotesque/files/bricolage-grotesque-latin-400-normal.woff")),
+    readFile(join(root, "bricolage-grotesque/files/bricolage-grotesque-latin-800-normal.woff")),
+    readFile(join(root, "vt323/files/vt323-latin-400-normal.woff")),
   ]);
 
   return new ImageResponse(
@@ -24,46 +34,101 @@ export default async function OpengraphImage() {
           width: "100%",
           height: "100%",
           display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          fontFamily: "Geist",
-          padding: 72,
-          background: "#07070b",
-          color: "#ececf1",
+          padding: 40,
+          fontFamily: "Bricolage",
+          background: "#ebe5d8",
           backgroundImage:
-            "radial-gradient(circle at 12% 8%, rgba(129,140,248,0.38), transparent 45%), radial-gradient(circle at 92% 92%, rgba(192,132,252,0.30), transparent 45%)",
+            "linear-gradient(rgba(23,23,26,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(23,23,26,0.08) 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 14, fontSize: 26, color: "#a0a0b0" }}>
-          <div style={{ width: 12, height: 12, borderRadius: 12, background: "#4ade80" }} />
-          {profile.role} at {profile.now.company} · {profile.location}
-        </div>
-
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ fontSize: 132, fontWeight: 700, letterSpacing: -5, lineHeight: 1 }}>{profile.name}</div>
-          <div style={{ display: "flex", marginTop: 28, fontSize: 52, color: "#a0a0b0", alignItems: "baseline", gap: 16 }}>
-            I build
-            <span style={{ fontFamily: "Instrument Serif", fontStyle: "italic", fontSize: 64, color: "#c4b5fd" }}>
-              reliable APIs
-            </span>
-            &amp;
-            <span style={{ fontFamily: "Instrument Serif", fontStyle: "italic", fontSize: 64, color: "#a5f3fc" }}>
-              GenAI apps
-            </span>
+        <div
+          style={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            background: "#f7f4ee",
+            borderRadius: 32,
+            border: "2px solid rgba(23,23,26,0.2)",
+            padding: "36px 44px",
+            color: "#17171a",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 20, letterSpacing: 3, color: "#6b675d" }}>
+            <div style={{ width: 14, height: 14, borderRadius: 14, background: "#1fb46a" }} />
+            SJ-01 · FALLBACK CONSOLE · {profile.location.toUpperCase()}
           </div>
-        </div>
-
-        <div style={{ display: "flex", fontSize: 24, color: "#7d7d8c" }}>
-          <span style={{ color: "#9ea0ff" }}>$&nbsp;</span>ask primary-model &quot;who is sarthak?&quot;
+          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginTop: 14 }}>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+              <div style={{ display: "flex", fontSize: 116, fontWeight: 800, letterSpacing: -4, lineHeight: 0.95 }}>
+                {profile.name}
+                <span style={{ color: "#ff5a1f" }}>.</span>
+              </div>
+              <div style={{ display: "flex", fontSize: 32, marginTop: 10, color: "#4a4740" }}>
+                {profile.role} · GenAI & LLM reliability
+              </div>
+            </div>
+          </div>
+          <div style={{ display: "flex", gap: 22, marginTop: 28, flex: 1 }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                flex: 1.15,
+                background: "#c5d3a0",
+                color: "#1e2a10",
+                borderRadius: 18,
+                padding: "16px 22px",
+                fontFamily: "Pixel",
+                fontSize: 30,
+                lineHeight: 1.2,
+              }}
+            >
+              <span>{'> ask "who is sarthak?"'}</span>
+              <span style={{ opacity: 0.6, textDecoration: "line-through" }}>→ PRIMARY (Gemini) ....... 503 ✗</span>
+              <span>→ SECONDARY (Groq) ...... 200 ✓</span>
+              <span>[fallback] answered. Nothing broke.</span>
+            </div>
+            <div style={{ display: "flex", gap: 12, flex: 1 }}>
+              {featured.map((p) => (
+                <div
+                  key={p.slug}
+                  style={{
+                    flex: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "flex-end",
+                    background: COLORS[p.color],
+                    borderRadius: "16px 16px 8px 8px",
+                    padding: 10,
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      background: "#fffdf6",
+                      borderRadius: 10,
+                      padding: "10px 12px",
+                      fontSize: 24,
+                      fontWeight: 800,
+                      lineHeight: 1,
+                    }}
+                  >
+                    {p.title}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     ),
     {
       ...size,
       fonts: [
-        { name: "Geist", data: sansRegular, style: "normal", weight: 400 },
-        { name: "Geist", data: sansBold, style: "normal", weight: 700 },
-        { name: "Instrument Serif", data: serif, style: "italic", weight: 400 },
+        { name: "Bricolage", data: regular, style: "normal", weight: 400 },
+        { name: "Bricolage", data: heavy, style: "normal", weight: 800 },
+        { name: "Pixel", data: pixel, style: "normal", weight: 400 },
       ],
     },
   );

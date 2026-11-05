@@ -1,7 +1,6 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { MoonIcon, SunIcon } from "./icons";
 
 type Theme = "light" | "dark";
 
@@ -11,10 +10,10 @@ function subscribe(notify: () => void) {
   return () => mo.disconnect();
 }
 const getTheme = (): Theme =>
-  document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
+  document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
 
 export function useTheme() {
-  const theme = useSyncExternalStore(subscribe, getTheme, () => "dark" as Theme);
+  const theme = useSyncExternalStore(subscribe, getTheme, () => "light" as Theme);
   const setTheme = (t: Theme) => {
     document.documentElement.setAttribute("data-theme", t);
     try {
@@ -26,20 +25,26 @@ export function useTheme() {
   return { theme, setTheme, toggle: () => setTheme(theme === "dark" ? "light" : "dark") };
 }
 
-export function ThemeToggle() {
+/** A physical DAY / NIGHT switch. */
+export function ThemeToggle({ compact = false }: { compact?: boolean }) {
   const { theme, toggle } = useTheme();
-  const next = theme === "dark" ? "light" : "dark";
+  const night = theme === "dark";
   return (
     <button
       type="button"
+      role="switch"
+      aria-checked={night}
       onClick={toggle}
-      aria-label={`Switch to ${next} mode`}
-      title={`Switch to ${next} mode`}
-      className="inline-flex size-9 items-center justify-center rounded-full border border-line bg-card text-muted transition-colors hover:border-line-strong hover:text-fg"
+      className="group inline-flex items-center gap-2 rounded-full py-1 pl-1 pr-1 sm:pr-2"
+      title={night ? "Switch to day mode" : "Switch to night mode"}
     >
-      {/* Both icons exist in the HTML; CSS shows the right one so SSR never flashes the wrong icon. */}
-      <SunIcon className="hidden [[data-theme=dark]_&]:block" />
-      <MoonIcon className="block [[data-theme=dark]_&]:hidden" />
+      <span className="sr-only">Night mode</span>
+      <span aria-hidden data-on={night} className="toggle toggle-sm toggle-night" />
+      {!compact && (
+        <span aria-hidden className="label hidden !text-[0.6rem] sm:inline">
+          {night ? "Night" : "Day"}
+        </span>
+      )}
     </button>
   );
 }

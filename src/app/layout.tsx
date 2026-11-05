@@ -1,22 +1,33 @@
 import type { Metadata, Viewport } from "next";
-import { GeistSans } from "geist/font/sans";
-import { GeistMono } from "geist/font/mono";
 import localFont from "next/font/local";
 import { site } from "@/data/site";
 import { getSiteUrl } from "@/lib/site-url";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
-import { Interactions } from "@/components/interactions";
-import { ScrollProgress } from "@/components/scroll-progress";
 import "./globals.css";
 
-// Display serif used only for italic accent words (see .serif in globals.css).
-const serif = localFont({
-  src: "../../node_modules/@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2",
-  weight: "400",
-  style: "italic",
-  variable: "--font-serif-display",
+// Characterful, self-hosted type (no Google Fonts request at runtime):
+// Bricolage Grotesque (variable weight + width) for display & body,
+// Martian Mono for tiny hardware labels, VT323 for the LCD.
+const display = localFont({
+  src: "../../node_modules/@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-wdth-normal.woff2",
+  weight: "200 800",
+  style: "normal",
+  variable: "--font-display",
   display: "swap",
+  declarations: [{ prop: "font-stretch", value: "75% 100%" }],
+});
+const label = localFont({
+  src: "../../node_modules/@fontsource-variable/martian-mono/files/martian-mono-latin-wght-normal.woff2",
+  weight: "100 800",
+  variable: "--font-label",
+  display: "swap",
+  preload: false,
+});
+const pixel = localFont({
+  src: "../../node_modules/@fontsource/vt323/files/vt323-latin-400-normal.woff2",
+  weight: "400",
+  variable: "--font-pixel",
+  display: "swap",
+  preload: false,
 });
 
 const { profile } = site;
@@ -52,16 +63,14 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    // Dark is the default theme; the light value only matters if the visitor picked light.
-    { color: "#07070b" },
-  ],
+  // Day (light) is the default theme; Night is opt-in.
+  themeColor: "#ebe5d8",
   width: "device-width",
   initialScale: 1,
 };
 
-/** Runs before first paint: sets data-theme (stored choice, default dark) and the `js` flag. */
-const themeScript = `(function(){try{var d=document.documentElement;d.classList.add('js');var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t='dark'}d.setAttribute('data-theme',t)}catch(e){document.documentElement.classList.add('js')}})();`;
+/** Runs before first paint: sets data-theme (stored choice, default light "day") and the `js` flag. */
+const themeScript = `(function(){try{var d=document.documentElement;d.classList.add('js');var t=localStorage.getItem('theme');if(t!=='light'&&t!=='dark'){t='light'}d.setAttribute('data-theme',t)}catch(e){document.documentElement.classList.add('js')}})();`;
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -76,22 +85,18 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${GeistSans.variable} ${GeistMono.variable} ${serif.variable}`}>
+    <html lang="en" suppressHydrationWarning className={`${display.variable} ${label.variable} ${pixel.variable}`}>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body className="min-h-screen antialiased">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-md focus:bg-accent focus:px-3 focus:py-2 focus:text-accent-fg"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-yellow focus:px-3 focus:py-2 focus:font-semibold focus:text-[#17171a]"
         >
           Skip to content
         </a>
-        <ScrollProgress />
-        <Header />
-        <main id="main">{children}</main>
-        <Footer />
-        <Interactions />
+        {children}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

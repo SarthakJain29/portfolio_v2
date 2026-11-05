@@ -17,9 +17,9 @@ export function CopyEmail({ email }: { email: string }) {
             window.location.href = `mailto:${email}`;
           }
         }}
-        className="btn-orbit"
+        className="key key-yellow"
       >
-        <span>{copied ? "Copied ✓" : "Copy email"}</span>
+        {copied ? "Copied ✓" : "Copy address"}
       </button>
       <span className="sr-only" role="status" aria-live="polite">
         {copied ? "Email address copied to clipboard" : ""}

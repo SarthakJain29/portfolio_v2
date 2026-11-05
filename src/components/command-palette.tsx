@@ -1,8 +1,9 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { site } from "@/data/site";
-import { OPEN_PALETTE_EVENT, sections } from "@/lib/nav";
+import { OPEN_PALETTE_EVENT, openProject, sections } from "@/lib/nav";
 import { useTheme } from "./theme-toggle";
 
 type Cmd = { id: string; label: string; hint?: string; group: string; keywords?: string; run: () => void };
@@ -10,9 +11,11 @@ type Cmd = { id: string; label: string; hint?: string; group: string; keywords?:
 export function CommandPalette({
   notify,
   confetti,
+  outage,
 }: {
   notify: (msg: string) => void;
   confetti: () => void;
+  outage: () => void;
 }) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -21,6 +24,7 @@ export function CommandPalette({
   const [query, setQuery] = useState("");
   const [index, setIndex] = useState(0);
   const { theme, toggle } = useTheme();
+  const router = useRouter();
   const uid = useId();
   const { profile } = site;
 
@@ -35,10 +39,17 @@ export function CommandPalette({
     const ext = (href: string) => () => window.open(href, "_blank", "noopener,noreferrer");
     const list: Cmd[] = [
       ...sections.map((s) => ({ id: `go-${s.id}`, label: `Go to ${s.label}`, group: "Navigate", keywords: s.id, run: go(s.id) })),
-      { id: "go-top", label: "Back to top", group: "Navigate", keywords: "home hero", run: go("top") },
+      {
+        id: "plain",
+        label: "Switch to plain view",
+        hint: "simple text page",
+        group: "Navigate",
+        keywords: "plain text resume simple accessible print",
+        run: () => router.push("/plain"),
+      },
       {
         id: "theme",
-        label: `Switch to ${theme === "dark" ? "light" : "dark"} mode`,
+        label: `Switch to ${theme === "dark" ? "day (light)" : "night (dark)"} mode`,
         group: "Actions",
         keywords: "theme dark light appearance",
         run: toggle,
@@ -83,11 +94,11 @@ export function CommandPalette({
       { id: "leetcode", label: "Open LeetCode", group: "Links", run: ext(profile.socials.leetcode) },
       ...site.projects.map((p) => ({
         id: `proj-${p.slug}`,
-        label: p.github ? `Open ${p.title} on GitHub` : `Jump to projects: ${p.title}`,
-        hint: p.status === "in-progress" ? "in progress" : undefined,
+        label: `Insert cartridge: ${p.title}`,
+        hint: p.featured ? "★ featured" : p.status === "in-progress" ? "in progress" : undefined,
         group: "Projects",
-        keywords: `${p.tagline} ${p.stack.join(" ")}`,
-        run: p.github ? ext(p.github) : go("projects"),
+        keywords: `${p.repoName ?? ""} ${p.tagline} ${p.stack.join(" ")} ${p.fallbacks.flatMap((f) => f.chain).join(" ")}`,
+        run: () => openProject(p.slug),
       })),
       {
         id: "sudo",
@@ -103,10 +114,10 @@ export function CommandPalette({
           }, 900);
         },
       },
-      { id: "fallback", label: "Trigger a model fallback", hint: "easter egg", group: "Fun", keywords: "confetti party 503", run: confetti },
+      { id: "fallback", label: "Total outage: fail every provider", hint: "chaos", group: "Fun", keywords: "chaos confetti party 503 fallback", run: outage },
     ];
     return list;
-  }, [theme, toggle, profile, notify, confetti]);
+  }, [theme, toggle, profile, notify, confetti, outage, router]);
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -193,7 +204,7 @@ export function CommandPalette({
       onClick={(e) => {
         if (e.target === dialogRef.current) close(); // backdrop click
       }}
-      className="palette mx-auto mt-[10vh] w-[min(36rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-line-strong bg-card-solid p-0 text-fg shadow-2xl"
+      className="palette mx-auto mt-[10vh] w-[min(36rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-line-2 bg-chassis p-0 text-ink shadow-2xl"
     >
       <div className="flex items-center gap-3 border-b border-line px-4">
         <input
@@ -212,13 +223,13 @@ export function CommandPalette({
           placeholder="Type a command or search…"
           autoComplete="off"
           spellCheck={false}
-          className="h-12 w-full bg-transparent text-[15px] outline-none focus-visible:outline-none placeholder:text-subtle"
+          className="h-12 w-full bg-transparent text-[15px] outline-none focus-visible:outline-none placeholder:text-ink-3"
         />
-        <kbd className="shrink-0 rounded border border-line px-1.5 py-0.5 font-mono text-[11px] text-subtle">esc</kbd>
+        <kbd className="shrink-0 rounded border border-line px-1.5 py-0.5 font-mono text-[11px] text-ink-3">esc</kbd>
       </div>
       <ul id={`${uid}-list`} ref={listRef} role="listbox" aria-label="Commands" className="max-h-[min(22rem,55vh)] overflow-y-auto p-2">
         {results.length === 0 && (
-          <li role="presentation" className="px-3 py-6 text-center text-sm text-muted">
+          <li role="presentation" className="px-3 py-6 text-center text-sm text-ink-2">
             No matches. (Try &quot;sudo hire sarthak&quot;.)
           </li>
         )}
@@ -228,7 +239,7 @@ export function CommandPalette({
           return (
             <li key={c.id} role="presentation">
               {showGroup && (
-                <p className="px-3 pb-1 pt-3 font-mono text-[11px] uppercase tracking-wider text-subtle">{c.group}</p>
+                <p className="px-3 pb-1 pt-3 font-mono text-[11px] uppercase tracking-wider text-ink-3">{c.group}</p>
               )}
               <div
                 id={`${uid}-${c.id}`}
@@ -237,17 +248,17 @@ export function CommandPalette({
                 onMouseMove={() => setIndex(i)}
                 onClick={() => run(c)}
                 className={`flex cursor-pointer items-center justify-between gap-3 rounded-md px-3 py-2 text-sm ${
-                  i === safeIndex ? "bg-accent-soft text-accent" : "text-fg"
+                  i === safeIndex ? "bg-yellow text-[#17171a]" : "text-ink"
                 }`}
               >
                 <span>{c.label}</span>
-                {c.hint && <span className="truncate font-mono text-xs text-subtle">{c.hint}</span>}
+                {c.hint && <span className="truncate font-mono text-xs text-ink-3">{c.hint}</span>}
               </div>
             </li>
           );
         })}
       </ul>
-      <div className="flex items-center gap-4 border-t border-line px-4 py-2 font-mono text-[11px] text-subtle">
+      <div className="flex items-center gap-4 border-t border-line px-4 py-2 font-mono text-[11px] text-ink-3">
         <span>↑↓ navigate</span>
         <span>↵ select</span>
         <span className="ml-auto hidden sm:inline">⌘K to toggle</span>
