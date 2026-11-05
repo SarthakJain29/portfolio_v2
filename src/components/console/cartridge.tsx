@@ -39,7 +39,7 @@ export function SlotCartridge({ p, index }: { p: Project; index: number }) {
         <StatusLamp status={p.status} />
       </span>
       <span className="cart-sticker mt-2 flex flex-1 flex-col p-3">
-        <span className="truncate font-mono text-[0.56rem] font-semibold uppercase tracking-widest text-[#6b675d]">{p.label}</span>
+        <span className="truncate font-mono text-[0.56rem] font-semibold uppercase tracking-widest text-[#5e5a50]">{p.label}</span>
         <span className="mt-1 text-2xl font-extrabold leading-none tracking-tight [font-stretch:80%]">{p.title}</span>
         <span className="mt-1.5 line-clamp-2 text-[0.82rem] leading-snug text-[#4a4740]">{p.tagline}</span>
         <span className="mt-auto flex items-center justify-between gap-2 pt-3">
@@ -107,11 +107,11 @@ export function RackCartridge({ p, index }: { p: Project; index: number }) {
         <span className="flex flex-1 flex-col px-1.5 pb-1 pt-3">
           <span className="flex items-baseline justify-between gap-2">
             <span className="text-[1.65rem] font-extrabold leading-none tracking-tight [font-stretch:80%]">{p.title}</span>
-            {p.repoName && <span className="truncate font-mono text-[0.56rem] text-[#6b675d]">{p.repoName}</span>}
+            {p.repoName && <span className="truncate font-mono text-[0.56rem] text-[#5e5a50]">{p.repoName}</span>}
           </span>
           <span className="mt-2 text-[0.9rem] leading-snug text-[#4a4740]">{p.tagline}</span>
           <span className="mt-auto pt-4">
-            <span className="label !text-[0.55rem] !text-[#6b675d]">Fallback</span>
+            <span className="label !text-[0.55rem] !text-[#5e5a50]">Fallback</span>
             {p.fallbacks.slice(0, 2).map((f) => (
               <span key={f.label} className="mt-0.5 block truncate">
                 <ChainLine chain={f.chain} className="text-[#17171a]" />

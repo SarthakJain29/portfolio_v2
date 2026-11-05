@@ -11,7 +11,7 @@
   --well: #ddd5c5;
   --ink: #17171a;
   --ink-2: #4a4740;
-  --ink-3: #6b675d;
+  --ink-3: #5e5a50; /* ≥ 4.8:1 on paper, chassis and the darker inset wells */
   --line: rgba(23, 23, 26, 0.14);
   --line-2: rgba(23, 23, 26, 0.26);
   --shadow: 23, 20, 12;
@@ -22,7 +22,7 @@
   --green: #1fb46a;
   --pink: #ff7ab6;
   --violet: #8e6bff;
-  --red: #e5312b;
+  --red: #d22a23; /* white text on it ≈ 4.9:1 */
   --led-off: #b9b1a1;
   /* Coloured *text* needs darker variants on the light paper to pass WCAG AA. */
   --t-orange: #b93a0b;

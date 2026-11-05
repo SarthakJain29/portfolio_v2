@@ -12,7 +12,7 @@ export function Manual() {
           <article className="relative h-full rotate-[-0.6deg] rounded-md bg-receipt p-6 text-[#17171a] shadow-[0_18px_30px_-18px_rgba(23,20,12,0.55)] sm:p-9">
             {/* fold line */}
             <span aria-hidden className="pointer-events-none absolute inset-y-0 left-1/2 w-px bg-gradient-to-b from-transparent via-black/10 to-transparent" />
-            <p className="font-mono text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-[#6b675d]">Operator manual · p. 1</p>
+            <p className="font-mono text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-[#5e5a50]">Operator manual · p. 1</p>
             <h2 id="manual-title" className="mt-2 text-4xl font-extrabold leading-none tracking-tight [font-stretch:78%] sm:text-5xl">
               About the operator
             </h2>

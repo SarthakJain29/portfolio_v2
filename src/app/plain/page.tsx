@@ -17,12 +17,14 @@ export default function PlainView() {
   const { profile, experience, projects, skills, education, achievements, stats } = site;
   const ordered = [...projects].sort((a, b) => (a.featured ?? 9) - (b.featured ?? 9));
   const a = "underline underline-offset-2 hover:text-t-blue";
+  // Link rows get real tap height (WCAG 2.5.8 target size); inline links in prose stay inline.
+  const tap = `${a} inline-block py-1.5`;
 
   return (
     <main id="main" className="mx-auto max-w-3xl bg-chassis px-5 py-10 text-ink sm:my-8 sm:rounded-2xl sm:border sm:border-line-2 sm:px-10 print:my-0 print:border-0 print:bg-white">
       <p className="no-print label flex flex-wrap items-center justify-between gap-2">
         <span>Plain view · graceful fallback of the SJ-01 console</span>
-        <Link href="/" className={`${a} !text-ink`}>
+        <Link href="/" className={`${tap} !text-ink`}>
           ← Back to the console
         </Link>
       </p>
@@ -34,11 +36,11 @@ export default function PlainView() {
         </p>
         <p className="mt-3 leading-relaxed text-ink-2">{profile.summary}</p>
         <p className="mt-4 flex flex-wrap gap-x-5 gap-y-1 text-sm">
-          <a className={a} href={`mailto:${profile.email}`}>{profile.email}</a>
-          <a className={a} href={profile.resumeUrl} download>Resume (PDF)</a>
-          <a className={a} href={profile.socials.github}>GitHub</a>
-          <a className={a} href={profile.socials.linkedin}>LinkedIn</a>
-          <a className={a} href={profile.socials.leetcode}>LeetCode</a>
+          <a className={tap} href={`mailto:${profile.email}`}>{profile.email}</a>
+          <a className={tap} href={profile.resumeUrl} download>Resume (PDF)</a>
+          <a className={tap} href={profile.socials.github}>GitHub</a>
+          <a className={tap} href={profile.socials.linkedin}>LinkedIn</a>
+          <a className={tap} href={profile.socials.leetcode}>LeetCode</a>
         </p>
       </header>
 
@@ -98,11 +100,11 @@ export default function PlainView() {
             <p className="mt-1 text-sm text-ink-2">
               <strong className="text-ink">Stack:</strong> {p.stack.join(", ")}
             </p>
-            <p className="mt-2 flex flex-wrap gap-x-4 text-sm">
-              {p.github && <a className={a} href={p.github}>Code on GitHub</a>}
-              {p.live && <a className={a} href={p.live}>Live demo</a>}
-              {p.video && <a className={a} href={p.video.src}>Demo video ({p.video.title.split(": ")[1] ?? "MP4"})</a>}
-              {p.credit && <a className={a} href={p.credit.href}>{p.credit.label}</a>}
+            <p className="mt-1 flex flex-wrap gap-x-4 text-sm">
+              {p.github && <a className={tap} href={p.github}>Code on GitHub</a>}
+              {p.live && <a className={tap} href={p.live}>Live demo</a>}
+              {p.video && <a className={tap} href={p.video.src}>Demo video ({p.video.title.split(": ")[1] ?? "MP4"})</a>}
+              {p.credit && <a className={tap} href={p.credit.href}>{p.credit.label}</a>}
             </p>
           </article>
         ))}

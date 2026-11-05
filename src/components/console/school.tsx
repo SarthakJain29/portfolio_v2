@@ -34,17 +34,17 @@ export function School() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
         <Reveal className="lg:col-span-5">
           <article className="relative h-full overflow-hidden rounded-2xl border-2 border-dashed border-line-2 bg-receipt p-6 text-[#17171a] sm:p-8">
-            <p className="font-mono text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-[#6b675d]">Warranty card · education</p>
+            <p className="font-mono text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-[#5e5a50]">Warranty card · education</p>
             <h3 className="mt-3 text-3xl font-extrabold leading-none tracking-tight [font-stretch:78%]">{ed.degree}</h3>
             <p className="mt-2 text-lg">{ed.school}</p>
             <dl className="mt-6 grid grid-cols-2 gap-4 font-mono text-sm">
               <div>
-                <dt className="text-[0.62rem] uppercase tracking-widest text-[#6b675d]">Period</dt>
+                <dt className="text-[0.62rem] uppercase tracking-widest text-[#5e5a50]">Period</dt>
                 <dd className="font-semibold">{ed.period}</dd>
               </div>
               {ed.details.map((d) => (
                 <div key={d}>
-                  <dt className="text-[0.62rem] uppercase tracking-widest text-[#6b675d]">Note</dt>
+                  <dt className="text-[0.62rem] uppercase tracking-widest text-[#5e5a50]">Note</dt>
                   <dd className="font-semibold">{d}</dd>
                 </div>
               ))}

@@ -46,7 +46,7 @@ export function TopBar() {
       {/* Top strip */}
       <header className="no-print fixed inset-x-0 top-0 z-40 px-2 pt-2 sm:px-4 sm:pt-3">
         <div className="chassis mx-auto flex h-14 max-w-6xl items-center justify-between gap-2 !rounded-2xl px-2 sm:px-3">
-          <a href="#console" className="flex items-center gap-2 rounded-xl px-1.5 py-1" aria-label="Sarthak Jain: back to the console">
+          <a href="#console" className="flex items-center gap-2 rounded-xl px-1.5 py-1">
             <span aria-hidden className="grid grid-cols-1 size-8 place-items-center rounded-lg bg-orange font-mono text-[0.7rem] font-bold text-[#17171a]">
               SJ
             </span>
@@ -54,6 +54,7 @@ export function TopBar() {
             <span aria-hidden className="label hidden !text-[0.58rem] xl:inline">
               Model SJ-01
             </span>
+            <span className="sr-only">Sarthak Jain, back to the console</span>
           </a>
 
           <nav aria-label="Channels" className="hidden md:block">
