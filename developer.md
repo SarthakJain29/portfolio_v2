@@ -19,7 +19,7 @@ Working notes for Sarthak Jain's portfolio (`portfolio_v2`). Start here if you (
 - README (new screenshots) and this file.
 
 ### In progress
-- Nothing. The PR to `main` is open (not merged — that's yours).
+- **v3 redesign — "The Fallback Console"** (playful, light, tactile hardware concept) + real project data from each repo. See [v3 concept & research](#v3-concept--research).
 
 ### Next (for you)
 1. Add `public/resume.pdf` (see [TODO inventory](#todo-inventory)).
@@ -29,7 +29,63 @@ Working notes for Sarthak Jain's portfolio (`portfolio_v2`). Start here if you (
 
 ---
 
-## Concept & research
+
+## v3 concept & research
+
+> v3 brief (Nov 2026): v2 felt "too dark and generic, boring stacked sections". Make it **playful and interactive with one memorable signature concept**, light/colourful by default, while recruiters still get name, role, top 3 projects, resume and contact in 10 seconds.
+
+### Research: playful / interactive portfolios (v3 round)
+
+Method: each site below was loaded with a real request; the ones marked 📸 were also rendered in headless Chromium and looked at (contact sheet in my scratchpad, not committed). Notes on behaviour beyond the first screen come from prior familiarity, not a click-through, so treat them as inspiration notes.
+
+| # | Site | What it does | What I take / avoid |
+| --- | --- | --- | --- |
+| 1 | 📸 [daedalOS](https://dustinbrett.com) (Dustin Brett) | A full Windows-style desktop in the browser: icons, start menu, galaxy wallpaper, working apps. | The joy of "opening" things. Avoid: content is hidden behind icons; nothing is readable in 10 s. |
+| 2 | 📸 [ryOS](https://os.ryo.lu) (Ryo Lu) | Mac-OS-style desktop with a dock, Finder bar and an AI assistant ("An AI OS experience, made with Cursor"). | An AI helper as part of the metaphor. Avoid: another OS clone. |
+| 3 | 📸 [PostHog](https://posthog.com) | A company site rebuilt as a desktop: icons down both sides (incl. Trash), windows with traffic lights, illustrated wallpaper. | Proof the OS metaphor works for a *product* site. It also shows the trope is now mainstream (there are Bolt/Framer tutorials for "macOS-style portfolios"), so it's no longer memorable on its own. |
+| 4 | [Bruno Simon](https://bruno-simon.com) | Drive a 3D car around his projects (Awwwards Site of the Day/Month, 2019; new Site of the Month Jan 2026). | One signature idea people retell. Avoid: WebGL weight vs. Lighthouse 95+. |
+| 5 | 📸 [Lynn Fisher](https://lynnandtonic.com) | Redesigns every year (now "v.XIX"), currently a paper-textured book index with a display serif. | Personality and texture on a light background; an index that's one click to everything. |
+| 6 | 📸 [Josh W. Comeau](https://www.joshwcomeau.com) | Bright sky-blue world, rainbow arc, 3D avatar, sound toggle, whimsical micro-interactions. | Light + colourful can still feel premium; delight in the details. |
+| 7 | 📸 [Henry Heffernan](https://henryheffernan.com) | "Click start to begin": a 3D retro computer you sit in front of, with an OS inside. | A single tactile "object" as the hero. Avoid: gating content behind a start button. |
+| 8 | 📸 [Jhey Tompkins](https://jhey.dev) | Light, minimal list with a hand-drawn signature, underlined links, live status lines (weather, now playing). | Small "live" readouts that make a page feel alive. |
+| 9 | 📸 [Cassie Evans](https://cassie.codes) | Fluid generative artwork with a terminal-style note on top. | Generative background as atmosphere. (Dark; not my direction this time.) |
+| 10 | 📸 [Pacôme Pertant](https://pacomepertant.com) | Motion & sound designer; Awwwards Site of the Day (Jun 2026) per search. | Sound/motion as identity; restraint in the first frame. |
+| 11 | [teenage engineering](https://teenage.engineering) | Not a portfolio: a hardware brand (pocket operators, OP-1) famous for playful, labelled, colour-coded industrial design. | **The visual language for v3**: off-white chassis, orange/blue/yellow controls, tiny mono labels, toggles, LEDs. |
+| 12 | [Nothing](https://nothing.tech) | Hardware brand: "a world where tech is fun again"; dot-matrix type and transparent hardware. | Dot-matrix / LCD type as a display face. |
+| 13 | [godly.website](https://godly.website) → now redirects to **recent.design** (rendered 📸) | A feed of UI shots. Relevant items on the day: "Physical Texture Web Experiments", "Mechanical Key Switch Anatomy", "Playful Loading Screens", "Crumple Changelog", "Bot Animation States". | Physical, tactile UI is a current thread: keycaps, switches, paper. |
+| 14 | ViramOS write-up and the Bolt "macOS-style portfolio" tutorial (search results) | Boot screens, draggable windows, taskbars, mini-games. | Confirms OS portfolios are a template genre now, a reason *not* to pick it. |
+| — | Robby Leonardi's interactive résumé (rleonardi.com) | Classic "résumé as a side-scrolling game". | Couldn't load it (proxy refused), listed from memory only. |
+
+### Three signature concepts
+
+**A. "Fallback OS": a mini desktop where projects open as draggable windows.**
+A light, colourful desktop; each project is an app icon; windows drag, stack and minimise; a "system tray" shows model status and the OS visibly fails over when you kill a provider.
+- ➕ Instantly legible metaphor; draggable windows are genuinely fun; good container for screenshots/videos.
+- ➖ It is the most common "creative dev portfolio" template right now (daedalOS, ryOS, PostHog, tutorials). Windows hide content (bad for the 10-second recruiter test), and it adapts poorly to phones (you end up building a second site).
+
+**B. "Mission control": a status-page dashboard where projects are live service widgets.**
+Every project is a service tile with health, uptime and latency; the hero is an incident console.
+- ➕ Strong fit with LLM reliability and observability.
+- ➖ Dashboards want numbers, and I have **no real live metrics**: any uptime or latency figure would be invented, which the brief forbids. Dashboards also skew dark and dense, which is what v2 was criticised for.
+
+**C. "The Fallback Console": a tactile, colourful hardware device (teenage-engineering style) that demonstrates graceful fallback.** ✅ **Chosen**
+The page *is* an instrument: an off-white chassis with chunky toggles, LEDs, keycaps and an LCD.
+- **Hero:** the LCD streams an answer to "who is sarthak?" through a provider route (PRIMARY → SECONDARY → OFFLINE). Visitors flip the provider switches or hit a big red **CHAOS** button, and the console re-routes live and still answers. Turn *everything* off and it gracefully falls back to… the plain-text résumé view.
+- **Projects** are cartridges / rack modules, each labelled with its real **fallback chain** taken from its README (e.g. "Gemini → Groq → mock").
+- **Experience** prints out as a receipt from a thermal printer; **skills** are keycaps you can press; achievements are stickers on the case.
+
+**Why C wins for a GenAI / LLM-reliability engineer:**
+1. **It demonstrates the skill instead of decorating with it.** Model fallbacks and task-specific model selection are literally what Sarthak does at Myra AI, and **every one of the 10 projects has a real, documented fallback chain** (verified in each README). The interaction is the thesis: *things fail; good systems degrade gracefully*.
+2. **It's honest.** The console shows states and routes, never fake uptime or latency numbers.
+3. **It's memorable without being a template.** A "toy instrument" portfolio is rarer than an OS clone, and the CHAOS button gives people something to retell.
+4. **It passes the 10-second test.** Name, role, the top-3 project cartridges, a RESUME key and a CONTACT key are all on the hero device. Everything else is one click away via the channel buttons, and ⌘K still works.
+5. **It adapts to touch rather than shrinking.** On phones the console becomes a handheld (LCD on top, big thumb toggles), cartridges become a swipeable deck with bottom-sheet details, and channels become a bottom tab bar.
+6. **It's light and colourful by default** (chassis cream, signal orange, electric blue, sunny yellow), with a "night shift" dark mode as the secondary option.
+
+
+---
+
+## Concept & research (v1–v2, kept for history)
 
 ### Concept: "Graceful fallback" — now with more polish
 
