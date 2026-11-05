@@ -2,33 +2,36 @@
 
 Working notes for Sarthak Jain's portfolio (`portfolio_v2`). Start here if you (or a new Claude session) are picking this up.
 
-- [Progress](#progress) · [Concept & research](#concept--research) · [Setup & run](#setup--run) · [Editing content](#editing-content) · [Deploy to Vercel](#deploy-to-vercel) · [Decisions](#decisions) · [Blockers & workarounds](#blockers--workarounds) · [TODO inventory](#todo-inventory) · [Quality results](#quality-results)
+- [Progress](#progress) · [v3 concept & research](#v3-concept--research) · [Screenshot critique](#screenshot-critique-v3) · [Data sources](#data-sources) · [Setup & run](#setup--run) · [Editing content](#editing-content) · [Deploy to Vercel](#deploy-to-vercel) · [Decisions](#decisions) · [Blockers & workarounds](#blockers--workarounds) · [TODO inventory](#todo-inventory) · [Quality results](#quality-results) · [History](#history-v1--v2)
 
 ---
 
 ## Progress
 
-> Updated on every push. Branch: `claude/v1`.
+> Updated on every push. Branch: `claude/v1` (PR [SarthakJain29/portfolio_v2#1](https://github.com/SarthakJain29/portfolio_v2/pull/1), not merged).
 
 ### Done
-- **v1** — Next.js 16 (App Router) + TypeScript (strict) + Tailwind 4; all content in one typed file (`src/data/site.ts`); all sections; command palette; SEO/OG; placeholder images; docs.
-- **v2 redesign** (after feedback that v1 felt basic/common) — dark-first glass UI with an indigo→violet→cyan accent and a serif-italic accent font; floating pill nav with sliding indicator + scroll-progress bar; hero with aurora/beam/grid/meteors, word-by-word name reveal, flip-words line, tilting terminal card with floating chips and a moving-border CTA; animated stat strip + tech marquee; bento About (Now card, live Hyderabad clock, LeetCode, focus, education); tracing-beam experience timeline; featured project + 2×2 grid + horizontal "in progress" rail, all with pointer-follow glow cards; skills bento; education/achievements bento; contact card with gradient email; giant hover-reveal wordmark footer; restyled OG image.
-- Light and dark themes both polished; dark is the default. `prefers-reduced-motion` honoured everywhere (re-verified).
-- Verified in headless Chromium: no console errors, no horizontal overflow (1440 px / 390 px), palette, theme persistence, Konami, glow, count-up, reduced motion.
-- Lighthouse (local prod build): desktop 100/100/100/100; mobile 95–100 performance, 100 for the rest. Details [below](#quality-results).
-- README (new screenshots) and this file.
+- **v3 redesign, "The Fallback Console"**: a light, colourful, tactile hardware-style instrument (teenage-engineering inspired) replacing the v2 dark glass UI. Concept, research and the two rejected alternatives are [below](#v3-concept--research).
+  - Hero: the console. Name, role, Resume/Email keys and the **top-3 project cartridges** sit in one screen; the LCD streams an answer through a simulated provider route (Gemini → Groq → offline). Flip a switch or hit **CHAOS** and it re-routes; turn everything off and it gracefully falls back to the **plain view**.
+  - Projects: a rack of 10 cartridges, each labelled with its **real fallback chain**; "insert" one to open the inspector (screenshots, demo video, the interesting engineering, fallback chains, stack, links). The inspector is deep-linkable (`#project-<slug>`), and on phones it's a bottom sheet with drag-to-close.
+  - Experience printed as thermal receipts; skills as a pressable keycap keyboard whose LCD shows which projects use each skill; education as a warranty card, achievements as draggable stickers; contact as a transmit panel; About as an "operator manual" with a live Hyderabad clock.
+  - **Plain view** (`/plain`): every word of the site as a simple, printable page. It's also the no-JS target of every cartridge link.
+  - Bold palette, Bricolage Grotesque (variable width) + Martian Mono + VT323, a day theme by default and a "night shift" dark theme.
+  - Keyboard: every control is a real button/switch; keys **1–6** jump between channels; ⌘K palette ("insert cartridge: …", "total outage"); the Konami code fails every provider.
+- **Real proof of work**: all 10 projects rewritten from their README/CHANGES.md on the named branches; 25 real screenshots imported as webp at their true aspect ratios; two demo videos re-encoded to 720p (lazy, muted hover preview, click for sound where there *is* sound); MF X-ray, News Shorts and Diffwise Evals featured.
+- Verified: typecheck + lint + build pass; Lighthouse **100/100/100/100 desktop, 99/100/100/100 mobile** (plain view 100 everywhere); axe-core **0 WCAG A/AA violations** in day and night, desktop and mobile; Playwright regression (keyboard switches keep focus, digit channels, palette → inspector, Esc/Back closes, video plays with sound, reduced motion renders everything static). Details in [Quality results](#quality-results).
+- Screenshots in `docs/`, critiqued against the brief, weakest parts fixed (see [critique](#screenshot-critique-v3)).
 
 ### In progress
-- **v3 redesign — "The Fallback Console"** (playful, light, tactile hardware concept) + real project data from each repo. See [v3 concept & research](#v3-concept--research).
+- Nothing. PR #1 is updated and open for your review.
 
 ### Next (for you)
-1. Add `public/resume.pdf` (see [TODO inventory](#todo-inventory)).
-2. Add GitHub URLs for the in-progress projects, and live-demo URLs where they exist.
-3. Replace placeholder images in `public/projects/` with real screenshots (1200×750).
-4. Deploy on Vercel and set `NEXT_PUBLIC_SITE_URL` once you have a final domain.
+1. Add `public/resume.pdf` (every Resume key points there).
+2. Deploy on Vercel, then fill the `live: null // TODO(live)` URLs in `src/data/site.ts`.
+3. Decide whether project links should keep pointing at the `claude/*` branches (what the copy describes) or at `main` once you merge those branches.
+4. Optional: re-render the Diffwise video with narration once the Gemini TTS quota allows (it's captions-only today).
 
 ---
-
 
 ## v3 concept & research
 
@@ -82,76 +85,54 @@ The page *is* an instrument: an off-white chassis with chunky toggles, LEDs, key
 5. **It adapts to touch rather than shrinking.** On phones the console becomes a handheld (LCD on top, big thumb toggles), cartridges become a swipeable deck with bottom-sheet details, and channels become a bottom tab bar.
 6. **It's light and colourful by default** (chassis cream, signal orange, electric blue, sunny yellow), with a "night shift" dark mode as the secondary option.
 
+---
+
+## Screenshot critique (v3)
+
+I captured desktop (1440×900), mobile (390×844, DPR 2) and night mode, then judged them against the brief. Final screenshots are in `docs/`.
+
+| Brief requirement | First pass (honest) | Fix |
+| --- | --- | --- |
+| Recruiter gets name, role, top 3, resume, contact in 10 s | ❌ The top-3 cartridges sat **below the fold** at 1440×900; only the LCD text named them. | Re-laid the hero as two columns: left = name, role, Resume/Email keys and the cartridge slot; right = the console. Measured: the cartridges end at 847 px, so they're fully visible at 1440×900. At 1280×800 the titles are visible. On a phone the first cartridge is visible before scrolling. |
+| Strong mobile layout | ❌ **The whole page was 477 px wide on a 390 px phone.** The projects grid had no base column track, so one long, unbreakable fallback-chain line stretched it; mobile Chrome then widened the layout viewport and the top bar and inspector were cut off. My first "no overflow" check missed it because `overflow-x: clip` hid the scrollbar. | `grid-cols-1` (minmax(0,1fr)) on every breakpoint-only grid; added a check for `innerWidth` vs the device width. Now 390 = 390, and 360 too. |
+| Experience section | ❌ **Receipts were invisible**: the "print" clip-path waited for `.in` on the receipt, but the reveal adds `.in` to the wrapper. | CSS now also matches `.in .print`. |
+| Purposeful interactions | ⚠️ Standby providers had a blinking yellow LED, which read as "warning" though nothing was wrong. The CHAOS button remounted on each press and lost keyboard focus. | A calm "standby" LED state; the wobble restarts without remounting (verified: focus stays on the button). |
+| Signature is understood | ⚠️ On desktop a blank band sat between the essentials and the cartridge slot, and nothing told people the console was interactive. | A small "That console is live. Switch Gemini off, or hit chaos…" hint fills the gap with purpose. |
+| Accessibility | ⚠️ Lighthouse a11y 96: faint labels on the inset "wells" (3.9:1), white on the CHAOS red (4.36:1), the logo link's aria-label not containing its visible text, and small link targets on `/plain`. Signal orange/green/violet *text* on the light paper would also have failed (about 2.2:1). | Darker `--ink-3`, a deeper red, separate darker `--t-*` text tokens for coloured words in day mode, an sr-only link suffix instead of the aria-label, and taller tap targets. Now 100, and 0 axe violations in both themes. |
+| Mobile polish | ⚠️ LinkedIn wrapped alone onto a second row; CGPA/scholarship appeared twice (card + stickers); the keyboard LCD was empty until you pressed a key. | Four-column key row on phones; stickers are achievements only; TypeScript is pre-pressed so the readout shows what it does. |
+
+**Still not perfect (left as is, by choice):**
+- Slot cartridges truncate the tagline and fallback chain at desktop width. The full text is one click away, and the rack shows it all.
+- The LCD transcript is a *simulation*, which is labelled on the screen. It doesn't call real models (that would need keys and cost money).
+- Stickers drag only with a mouse (touch drags would fight scrolling). They're decoration; the text is all readable without dragging.
 
 ---
 
-## Concept & research (v1–v2, kept for history)
+## Data sources
 
-### Concept: "Graceful fallback" — now with more polish
+Every project's copy, highlights, stack and fallback chains come from its README (and CHANGES.md where present) on the branch below, read on 5 Nov 2026. Images were imported from each repo's `docs/` with `scripts/import-assets.py`.
 
-An elegant, dark-first page (glass cards, hairline borders, one indigo→violet→cyan accent, film grain, Geist Sans + Geist Mono, and Instrument Serif *italic* for emphasis words) whose playful touches all hang off one idea from my actual work: **LLM reliability — when the primary model fails, fall back gracefully.**
+| Project (site) | Repo @ branch | Notes |
+| --- | --- | --- |
+| MF X-ray ★ | `MF-x-ray` @ `claude/v1` | Screenshots use the repo's synthetic sample portfolio. No CHANGES.md. |
+| News Shorts ★ | `News-shorts` @ `claude/news-shorts-pwa-bs4t1d` | Phone screenshots (589×990) shown at their real ratio. No CHANGES.md. |
+| Diffwise Evals ★ | `AI-code-review-bot` @ `claude/evals-scoreboard` (`evals/`) | **No Results section with headline scores**: only a 5-case smoke test has run, so the site describes the methodology and shows dataset facts (110 cases, 91/19, 12 repos) and the judge validation (19/19, κ 1.00, small set), with caveats. The bot itself is at Phase 1 (`docs/learning/PROGRESS.md`), so it's marked "in progress". |
+| ScribeAI | `AI-Blog-Generator` @ `claude/revamp-v2-fpu17b` | Renamed product. |
+| Folio | `PDF_Chatbot` @ `claude/revamp-v2` | Renamed product. |
+| MeetNote | `MeetNote` @ `claude/revamp-v2` | |
+| QuickChat | `Quick-Chat` @ `claude/revamp-v2-nyr6lf` | The README's demo login is **not** reproduced. |
+| DragShift | `DragShift` @ `claude/revamp-v2` | The bundled macOS app is a Swift rewrite of `llamaboi55/DragShift` (MIT); credited in the inspector. |
+| Similar Song AI | `Similar-song-AI` @ `claude/v1` | |
+| Notes Inbox | `Notes-Inbox-app` @ `claude/v1` | Its images are **illustrative mockups** of real bot output (per its README); labelled as such. |
+| Demo videos | `Demo-Videos` @ `claude/diffwise-video`, `claude/mf-xray-video` | Both are Remotion motion-graphics videos with **stylised mock UIs** (per their READMEs). Diffwise is captions-only (narration never generated), so it gets no sound control and its silent audio track was dropped. |
 
-| Touch | What it does |
-| --- | --- |
-| **Hero** | Aurora glows, a swaying light beam, a masked grid, a few meteors and a pointer-following spotlight. The name reveals word-by-word; "I build *reliable APIs / GenAI applications / LLM evaluation tools / real-time apps*" cycles (all from my real work). Moving-border primary button. |
-| **Hero terminal** | A fake `reliability.sh` session in a 3D-tilting glass card with floating tech chips: `ask primary-model "who is sarthak?"` → `503` → "falling back to secondary-model…" → `200` with a one-line bio. Replayable. Screen readers get a static sentence; reduced-motion users see the final state immediately. |
-| **Stats strip + ticker** | Four count-up numbers (500+, 45%, 30%, 300+ — each taken from the brief) and two counter-rotating tech marquees. |
-| **Bento About** | Bio with highlighter marks, a "Now" card, a live Hyderabad clock + coordinates, focus chips, education and LeetCode tiles. |
-| **Experience** | A tracing beam that fills with gradient as you scroll, one glow-card per role. |
-| **Glow cards** | Every card's border and surface glow follow the pointer. |
-| **Floating nav** | Glass pill with a sliding active indicator, plus a thin gradient scroll-progress bar. |
-| **Command palette** | `⌘/Ctrl+K` (or `/`, or the "Menu" button — which is also the mobile nav). Native `<dialog>` + ARIA combobox/listbox. |
-| **Easter eggs** | Konami code (↑↑↓↓←→←→BA) or `sudo hire sarthak` in the palette → "primary-model unavailable → falling back to confetti 🎉" (confetti skipped under reduced motion). The footer wordmark also reveals a gradient under your cursor. |
+To refresh assets after a repo changes: clone the repos (lower-case folder names) on those branches into one folder, render `evals/reports/scoreboard.html` to a PNG if you want that image, then:
 
-Design rules I held myself to: content first, one accent family, animation that earns its place, **no animation or 3D library** (CSS + a few tiny hooks → small bundle, high Lighthouse), no layout shift, fully usable without JS, everything respects `prefers-reduced-motion`.
+```bash
+python3 scripts/import-assets.py --repos /path/to/clones --scoreboard /path/to/scoreboard.png
+```
 
-### Research round 2 (after the "too basic" feedback)
-
-**[vibrant.design](https://vibrant.design)** — loaded directly (HTTP 200). It's a curated inspiration gallery ("Best of the Internet": websites, sections, launch videos, UI shots) with section categories like Hero, Features, **Bento**, Pricing, CTA, Logo Cloud, Testimonials, Footer. Items that stood out and shaped this redesign: *Naty Minimal Portfolio Site*, *Giant Wordmark Footer Concepts*, *Tilt-Responsive Rotating Manga Panel*, *Hex's Hero Section*, *Generative Shader Card Series*. Takeaways → giant outlined wordmark footer, tilt-responsive hero card, bento sections, richer hero depth. (It's a gallery, not a component library — there was no code to take.)
-
-**[Aceternity UI](https://ui.aceternity.com)** — loaded directly; "200+ production-ready components… React, Tailwind CSS and Motion". I read its public component catalogue (114 component pages) and fetched the public registry JSON of 11 free components (`spotlight-new`, `tracing-beam`, `text-hover-effect`, `card-spotlight`, `flip-words`, `moving-border`, `bento-grid`, `infinite-moving-cards`, `text-generate-effect`, `floating-navbar`, `glowing-effect`). I read the first four in detail to understand how they're built (pointer-masked gradients, scroll-linked SVG beam, SVG gradient masks); for the rest I worked from their names/descriptions and standard CSS techniques. What I took:
-
-| Aceternity pattern | My implementation (written from scratch) |
-| --- | --- |
-| Spotlight / Aurora / Meteors | `.hero-beam` conic-gradient cone, `.aurora-*` radial blobs, `ui/meteors.tsx` (CSS only) |
-| Card Spotlight / Glowing Effect | `ui/glow-card.tsx` + `.glow-card` (pointer-masked radial gradients + gradient border) |
-| Moving Border | `.btn-orbit` (animated `@property --angle` conic border) |
-| Text Generate Effect | `.gen-word` blur-in (never starts at opacity 0, so LCP stays fast) |
-| Flip Words | `ui/flip-words.tsx` |
-| Tracing Beam | `ui/tracing-beam.tsx` (one CSS variable updated in rAF, no re-renders) |
-| Bento Grid | About / Skills / Education / Projects layouts |
-| Infinite Moving Cards | `ui/marquee.tsx` (CSS only, reduced-motion safe) |
-| Text Hover Effect | `ui/wordmark.tsx` (SVG stroke gradient revealed by a pointer-following mask) |
-| Floating Navbar | `header.tsx` pill nav with sliding indicator |
-| 3D Card Effect | `ui/tilt.tsx` |
-
-**Why not install Aceternity directly?** Its components depend on `motion` (+ `three`/`@react-three/fiber` for some) and many blocks are paid "Pro". Writing the techniques myself keeps the JS small (Lighthouse), avoids paid/licensed code, and lets everything honour reduced motion. I did **not** copy their source into this repo.
-
-**Also searched:** 2026 web-design trend roundups — bento grids, refined glassmorphism, big expressive typography and dark mode are all current (and a counter-movement toward brutalism exists, which I deliberately did not follow). My search found nothing useful on serif-italic accents, so that choice (Instrument Serif italic on emphasis words) is my own judgement call.
-
-### Research round 1: portfolios I looked at
-
-I loaded each site below with a real HTTP request (all returned 200 and I read their `<title>`/meta description). For Bruno Simon and the palette-based sites I also used search results that cite Awwwards or the sites themselves. **Honest limits:** my web search returned mostly roundup/listing pages, and I could not get godly.website or Awwwards listing pages to return detail, so I did not browse them gallery-style. Observations about visual design/behaviour below come from those loads, the search snippets, and my prior familiarity with these sites — I did not click through each one interactively. Treat them as inspiration notes, not audits.
-
-| # | Site | Why it's in the list | Taken into this design |
-| --- | --- | --- | --- |
-| 1 | [Brittany Chiang](https://brittanychiang.com) | The canonical minimal developer portfolio; appears in 2026 roundups as the minimalist reference. | Single page, section-per-concern structure, experience-first narrative. |
-| 2 | [Bruno Simon](https://bruno-simon.com) | Awwwards Site of the Day (Nov 2019), Site of the Month, and Developer Award/Site of the Year in the 2019 annuals; newer Awwwards entry listed too. You drive a car around his projects. | One *memorable* idea beats ten effects; play, but keep it optional. |
-| 3 | [Lee Robinson](https://leerob.com) | Almost pure typography; loads instantly. | Typographic hierarchy, performance as a feature. |
-| 4 | [Rauno Freiberg](https://rauno.me) | Design-engineering craft and keyboard-friendly detail. | Small interaction details (focus states, the `⌘K` chip). |
-| 5 | [Paco Coursey](https://paco.me) | Minimal site by the author of the `cmdk` command-menu library. | Command palette as primary power-user navigation. |
-| 6 | [Emil Kowalski](https://emilkowal.ski) | Known for restrained, well-tuned animation. | Short easing curves, no gratuitous motion. |
-| 7 | [Josh W. Comeau](https://joshwcomeau.com) | Playful micro-interactions, polished dark-mode toggle. | Delight that doesn't block content. |
-| 8 | [Lynn Fisher](https://lynnandtonic.com) | Yearly playful redesigns. | Permission to be a little silly (easter eggs). |
-| 9 | [Cassie Evans](https://cassie.codes) | SVG/animation-forward personal site. | One strong hero moment rather than many. |
-| 10 | [Samuel Kraft](https://samuelkraft.com) | Clean design-engineer portfolio. | Card/spacing rhythm. |
-| 11 | [Delba](https://delba.dev) | Listed in Scrimba's roundup for a small highlighter animation (Rough Notation). | The highlighter marks in About. |
-| 12 | [Devouring Details](https://devouringdetails.com) | "An interactive reference manual for interaction-curious designers." | In-context demonstrative interaction (replayable terminal). |
-| 13 | [Tobias Ahlin](https://tobiasahlin.com) / [Adam Wathan](https://adamwathan.me) | Dense-but-readable personal sites from tool authors. | Plain, scannable lists. |
-| 14 | [0PNG portfolio](https://0png.github.io/projects/0png-portfolio) | Found via search: global Ctrl+K palette + terminal-window hero. | Validated the terminal-hero + palette combo. |
-| 15 | [Aiyu portfolio terminal feature](https://github.com/aiyu-ayaan/Aiyu/wiki/Terminal-Feature) | Found via search: Ctrl+` terminal; Cmd+K separate. | Terminal is decoration, palette is navigation. |
-| 16 | [newbieboiz](https://newbieboiz.vercel.app/projects/portfolio-website) / [Harris Ahmad's palette docs](https://harris-ahmad.github.io/COMMAND_PALETTE) | Found via search: cmdk-style palettes as first-class navigation. | `⌘K`/`Ctrl+K` conventions. |
-| 17 | [awesome-command-palette](https://www.github.com/stefanjudis/awesome-command-palette) | Sites/libraries using palettes (GitHub, Vercel, Linear, Sentry…). | I built a small custom palette instead of adding `cmdk`/`kbar`. |
+It rewrites `public/projects/**`, `public/video/**` and `src/data/media.json` (the real width/height of each image, used by `next/image`). Needs Pillow and ffmpeg.
 
 ---
 
@@ -166,47 +147,49 @@ npm run dev        # http://localhost:3000
 
 | Command | What it does |
 | --- | --- |
-| `npm run dev` | Dev server. In dev, projects missing a GitHub link show a red **TODO** chip. |
+| `npm run dev` | Dev server. In dev, projects without a live URL show a red **TODO(live)** chip in the inspector. |
 | `npm run build` / `npm start` | Production build / serve it (use this for Lighthouse). |
-| `npm run typecheck` | `tsc --noEmit` |
-| `npm run lint` | ESLint (Next.js core-web-vitals + TypeScript rules) |
 | `npm run check` | typecheck + lint |
-| `node scripts/gen-placeholders.mjs` | Regenerate placeholder project SVGs. |
+| `python3 scripts/import-assets.py …` | Re-import screenshots/videos (see [Data sources](#data-sources)). |
 
-No environment variables are required. `.env.example` documents the one optional variable, `NEXT_PUBLIC_SITE_URL`.
+No environment variables are required (`.env.example` documents the optional `NEXT_PUBLIC_SITE_URL`).
 
 ### Project layout
 
 ```
 src/
-  data/site.ts          ← ALL content (edit this)
-  data/types.ts         ← types for the content
-  app/                  layout (SEO, fonts, theme script), page, OG image, robots, sitemap, icon, globals.css (design tokens)
-  components/           page sections, hero, floating nav, command palette, theme toggle, project card…
-  components/ui/        reusable effects: glow-card, tilt, flip-words, count-up, marquee, tracing-beam, wordmark, meteors, local-clock
-  lib/                  small helpers (site URL, nav list, media-query hook, confetti)
-public/projects/        placeholder project images (replace these)
-public/resume.pdf       ← you add this
-scripts/                placeholder generator
-docs/                   README screenshots
+  data/site.ts            ← ALL content (edit this)
+  data/types.ts           ← types for the content
+  data/media.json         ← generated image sizes (don't edit by hand)
+  app/(console)/          the console page + its layout (top bar, inspector, palette)
+  app/plain/page.tsx      plain view (no client JS)
+  app/layout.tsx          fonts, theme script, SEO metadata, JSON-LD
+  app/globals.css         design tokens (day/night), chassis, LCD, keys, cartridges, receipts…
+  app/opengraph-image.tsx generated OG image
+  components/console/     hero, fallback-console (the signature), cartridge, inspector, demo-video,
+                          rack, receipts, keyboard, stickers/school, transmit, manual, top-bar, footer
+  components/             command palette, interactions (keys 1–6, Konami), theme toggle, reveal, icons
+public/projects/<slug>/   real screenshots (webp)
+public/video/             demo videos (720p MP4) + posters
+public/resume.pdf         ← you add this
+scripts/import-assets.py  asset pipeline
+docs/                     README screenshots
 ```
 
 ---
 
 ## Editing content
 
-Everything lives in **`src/data/site.ts`**; the TypeScript types in `src/data/types.ts` will tell you if you get a field wrong.
+Everything lives in **`src/data/site.ts`**; `src/data/types.ts` explains each field.
 
-- **Profile / about / links / resume path:** `site.profile`. Also here: `heroWords` (the rotating "I build ___" phrases — keep them true), `aboutHighlights` (phrases underlined in the bio), `now` (the "Now" card), `coords` and `timeZone` (location card + live clock).
-- **Stat strip:** `site.stats` (value, optional suffix, label). Only put real figures here.
-- **Experience:** `site.experience` (an array; newest first).
-- **Add a project:** append an object to `site.projects`. Required: `slug`, `title`, `status` (`"shipped"` or `"in-progress"`), `tagline`, `description`, `stack`, `image`, `imageAlt`, `github`, `live`. Use `null` for links you don't have yet. Shipped projects render first, in-progress ones in their own group.
-- **Replace a placeholder image:** drop your screenshot into `public/projects/` (1200×750 recommended; `.png`, `.jpg`, `.webp` or `.svg`), then set that project's `image` to e.g. `"/projects/quickchat.png"`. Update `imageAlt` too.
-- **Skills / education / achievements:** `site.skills`, `site.education`, `site.achievements`.
-- **Resume:** put your PDF at `public/resume.pdf`. Until you do, the Resume buttons and the palette's "Download resume" will 404 — that's expected. (To change the path, edit `profile.resumeUrl`.)
-- **Colours / theme:** the tokens at the top of `src/app/globals.css` (`--g1/--g2/--g3` are the accent gradient; `--bg`, `--fg`, … for the rest). Dark is the default; light is under `[data-theme="light"]`.
-- **Accent word in a heading:** wrap it in `<Accent>…</Accent>` (serif italic gradient).
-- **Nav sections:** `src/lib/nav.ts`.
+- **Profile, About, links, resume path, "Now", time zone:** `site.profile`. Stats (`site.stats`) must be real numbers.
+- **A project** needs: `slug`, `title`, `status` (`"built"` | `"in-progress"`), `label` (printed on the cartridge), `color` (`orange|blue|yellow|green|pink|violet`), `tagline`, `description`, `highlights`, `stack`, `fallbacks` (real chains, e.g. `{ label: "Answers", chain: ["Gemini", "Groq", "Mock"] }`), `media`, `github`, `live`. Optional: `repoName`, `featured` (1–3 = hero order), `facts`, `video`, `mediaNote`, `credit`.
+- **Featured top 3:** set `featured: 1 | 2 | 3` on exactly three projects.
+- **Images:** add the file to `public/projects/<slug>/`, add its size to `src/data/media.json` (or re-run the import script), then reference it in `media` with an honest `alt` and `kind` (`desktop` wide screenshot, `mobile` phone capture, `mockup` illustration). The build fails loudly if a size is missing.
+- **Video:** `{ src, poster, title, caption, hasAudio }`. `hasAudio: false` hides the sound control.
+- **Live links:** replace `live: null` (each has a `TODO(live)` comment).
+- **Colours/theme:** tokens at the top of `src/app/globals.css`. Coloured *text* uses the `--t-*` tokens (they're darker in day mode for contrast).
+- **Channels (nav):** `src/lib/nav.ts`.
 
 ---
 
@@ -214,86 +197,86 @@ Everything lives in **`src/data/site.ts`**; the TypeScript types in `src/data/ty
 
 Free (Hobby) plan is enough.
 
-1. Push this repo to GitHub (already done for `claude/v1`; merge the PR to `main` when you're happy).
-2. Go to <https://vercel.com/new>, import `SarthakJain29/portfolio_v2`. Framework is auto-detected as Next.js; keep the defaults (build `next build`, no output dir changes).
+1. Merge the PR to `main` when you're happy (or deploy the branch as a preview first).
+2. Import `SarthakJain29/portfolio_v2` at <https://vercel.com/new>. Next.js is auto-detected; keep the defaults.
 3. Deploy. You get a free `*.vercel.app` URL.
-4. Optional but recommended: in *Project → Settings → Environment Variables* add `NEXT_PUBLIC_SITE_URL` = your final URL (e.g. `https://sarthak-jain.vercel.app`) so canonical/OG/sitemap URLs are exact, then redeploy. If you skip it, the build uses Vercel's `VERCEL_PROJECT_PRODUCTION_URL` automatically.
-5. Rename the project in Vercel (Settings → General) if you want a nicer `*.vercel.app` subdomain.
+4. Optional: set `NEXT_PUBLIC_SITE_URL` to your final URL (Project → Settings → Environment Variables) and redeploy so canonical/OG/sitemap URLs are exact. Otherwise Vercel's `VERCEL_PROJECT_PRODUCTION_URL` is used.
 
-Everything is statically prerendered (`○ Static`); there are no server functions, databases or paid services.
+Everything is statically prerendered (`/`, `/plain`, OG image, sitemap, robots). No server functions, databases or paid services. The videos (3.4 MB total) are served from `public/` with `preload="none"`.
 
 ---
 
 ## Decisions
 
-Made unattended, as asked. Change any of them freely.
+v3 decisions first; earlier ones that still apply follow.
 
-1. **Branch:** you asked for `claude/v1`; the session harness had pre-assigned `claude/optimistic-dijkstra-2w5z5h`. I followed your explicit instruction and worked/pushed only on `claude/v1`. Nothing was pushed to `main`, nothing force-pushed, no history rewritten.
-2. **Stack:** Next.js 16 (latest stable), React 19, TypeScript 5.9 (strict + `noUncheckedIndexedAccess`), Tailwind 4, ESLint 9. I deliberately did **not** use TypeScript 7 / ESLint 10 (too new for the Next lint plugins).
-3. **No animation, 3D or palette libraries** (no Motion/Framer, three.js, cmdk). CSS animations/transitions + IntersectionObserver + a few rAF-driven CSS variables; a custom ~260-line palette on native `<dialog>`. Keeps JS small and Lighthouse high.
-4. **Fonts:** Geist Sans/Mono via the `geist` npm package and Instrument Serif (italic only) via `@fontsource/instrument-serif` loaded with `next/font/local` — all self-hosted at build, no Google Fonts network call. The OG image reads the same font files at build time.
-5. **Contact:** `mailto:` + "copy email" button, no contact form — a form needs a backend/email service and secrets, and you asked for free-only/no keys. No phone number anywhere, per your instruction.
-6. **Missing links policy:** missing GitHub/live URLs are `null` in the data file with `// TODO(link)` comments. In `npm run dev` the card shows a red dashed **"TODO: add GitHub link"** chip; in production it quietly reads "Repository link coming soon" instead of looking broken to visitors.
-7. **In-progress projects get no GitHub link**, because I couldn't verify the repo URLs (see blockers) and you said not to invent links.
-8. **Project copy is sourced, not embellished** — see blockers for how each description was derived. In-progress projects use only what you told me (name + one phrase); I did not add technologies you didn't mention.
-9. **DragShift is credited to its upstream.** Its README says it's a rewrite of `llamaboi55/DragShift` (MIT) "from reading DragShift's source", so the card carries a visible credit link rather than implying it's an original idea.
-10. **QuickChat's demo login (in its README) is not reproduced** on the site.
-11. **Theme:** **dark by default** (the v2 design is tuned for it; light is fully supported and polished), regardless of OS setting; a manual choice is remembered in `localStorage` and applied by an inline script before paint (no flash). Say the word if you'd rather follow the OS.
-12. **No availability claim** ("open to work" etc.) — you didn't say it, so I didn't.
-13. **Hero entrance never starts at opacity 0.** An opacity-from-0 reveal on the hero text kept Chrome from counting it as LCP (mobile LCP 3.0 s); a transform-only entrance and a blur-in whose opacity starts at 0.25 fixed it (LCP 0.9 s mobile / 0.3 s desktop). Below-the-fold sections use the JS scroll reveal, which falls back to fully visible without JS.
-17. **v2 redesign scope.** Reworked every section's visual design and added interaction, but kept the content model and facts unchanged. New data fields are limited to things derivable from your brief (stats = your stated numbers; coordinates/time zone = Hyderabad).
-18. **Stat strip numbers** count up only if the strip is below the fold at load (otherwise the final number just shows), so there's never a visible reset flicker; SSR/no-JS/reduced-motion always render the final numbers.
-19. **In-progress projects** moved to a horizontally scrolling snap row (keyboard-focusable region) so the five placeholder-ish cards don't dominate the page; shipped projects are a featured card + 2×2 grid.
-20. **Decorative elements are `aria-hidden`** (meteors, chips, wordmark, aurora); the terminal and flip-words have screen-reader-only static equivalents.
-14. **Education + achievements** share one section; the 300+ LeetCode stat appears in the hero summary, About facts and achievements (all from your brief).
-15. **OG image** is generated at build time with `next/og` (`src/app/opengraph-image.tsx`), dark card with name/role/tagline — no binary asset to maintain.
-16. **Screenshots in `docs/`** are committed (≈0.5 MB) for the README.
+1. **Signature concept: "The Fallback Console"** (concept C), over a desktop-OS clone (common now, poor on phones, hides content) and a status dashboard (would need invented metrics). See [three signature concepts](#three-signature-concepts).
+2. **The console is a labelled simulation.** No real LLM calls (keys, cost, abuse). The LCD says "SIMULATED MODEL ROUTE"; the only counters are the visitor's own session counts.
+3. **Provider names on the switches mirror the real chain** used across the projects (Gemini → Groq → offline mock), so the toy maps to real work.
+4. **"Graceful fallback" is structural.** Every cartridge is an `<a href="/plain#slug">`, so with no JS it lands on that project in the plain view. JS intercepts the click and opens the inspector instead. Turning every provider off offers the plain view too.
+5. **Plain view is a route (`/plain`), not a CSS toggle.** It's server-rendered, has no client JS, prints cleanly, and is linkable and indexable. The header "PLAIN" control is a link styled as a switch.
+6. **Light "day" theme is the default regardless of OS** (per the brief); "night shift" is opt-in and remembered.
+7. **Typography:** Bricolage Grotesque (variable weight + **width**, used condensed for display), Martian Mono for hardware labels and VT323 for LCDs, all self-hosted from `@fontsource` (no Geist/Inter). Only Bricolage is preloaded. The OG image uses static `.woff` files because Satori can't read woff2 or variable fonts.
+8. **Coloured text uses darker `--t-*` tokens in day mode**, because signal orange/green/violet as text on the paper colour fail WCAG. The bright colours stay for surfaces (keys, cartridges, stickers).
+9. **Featured top 3 = MF X-ray, News Shorts, Diffwise Evals** (per the brief). Featured status shows as the hero slot and a ★ in the rack; the rack still lists all 10, so the Projects channel is complete on its own.
+10. **Status labels are "Built" vs "In progress", never "Shipped"/"Live"**, because no deployments are confirmed yet. Diffwise is "In progress" because the bot is at Phase 1; only its eval harness is complete.
+11. **GitHub links point at the branches the copy was written from** (e.g. `…/MeetNote/tree/claude/revamp-v2`). Several `main` branches still hold the older v1 code, which the descriptions don't describe.
+12. **Diffwise shows methodology, not a score.** There's no Results section in `evals/README.md`; the committed report is a 5-case smoke test the README itself calls meaningless. The site shows dataset facts and judge validation, with caveats.
+13. **The demo videos are captioned as what they are**: Remotion motion-graphics with mock UIs and fictional data. For Diffwise the primary visual is the real committed scoreboard report, not a frame of the mock UI.
+14. **Videos re-encoded** to 1280×720 H.264 with faststart (12.6 MB → 3.4 MB), `preload="none"` with a poster. Hover gives a muted preview (fine pointers, motion allowed); a click or the button plays with sound. The captions-only Diffwise cut lost its silent audio track and has no sound control.
+15. **Images** are pre-sized webp (≤1600 px wide desktop, ≤720 px phone) at the true aspect ratio, served through `next/image` with the real width/height from `media.json` (no CLS). Cartridge thumbnails use `alt=""` because the link already names the project; the inspector gallery carries descriptive alts.
+16. **No animation, UI or 3D libraries.** CSS animation + small hooks. Interactive bits (console, top bar, inspector, video, keyboard, stickers, palette, theme, clock, copy button, scroll reveal) are client components; everything else is server-rendered. Lighthouse stays at 99–100.
+17. **Reduced motion:** transcripts render instantly; no reveals, receipt printing, wire animation, blinking or wobble; no hover autoplay; confetti is skipped.
+18. Still applicable from v1/v2: Next.js 16 + React 19 + TS 5.9 strict + Tailwind 4 + ESLint 9; all content in one typed file; `mailto:` + copy instead of a contact form (no backend/keys); no phone number; JSON-LD `Person`; branch `claude/v1`, never `main`, no force-push.
 
 ---
 
 ## Blockers & workarounds
 
-| # | What failed / was unavailable | What I tried | Workaround | What you need to do |
-| --- | --- | --- | --- | --- |
-| 1 | **MeetNote README is the stock `create-next-app` text** — it says nothing about the product. | Fetched `main` and `master` (both identical, 1.4 KB boilerplate). | Described it only from what you gave me: "AI meeting summarizer", Next.js + Express + PostgreSQL. | Add a real description/feature bullets (and ideally update the repo README). |
-| 2 | **AI-Blog-Generator README is a generic Turborepo+Bun monorepo template** (stale names like `prescription-ai`, `@my-scope`), with no product features. | Fetched `main`/`master` (identical). | Described the verifiable architecture: Next.js 15 frontend, Dockerised Express API, shared eslint/ts/utils/db packages, Turborepo pipeline. "AI blog generator" comes from the repo name/your brief. | Add what it actually generates / how (and a better README). |
-| 3 | **PDF_Chatbot README** is likewise a monorepo template (stale `business-os-api` name). `main` branch 404s; `master` works. | Tried both branches. | Described Next.js App Router web app + Express API with health/ready endpoints + shared packages. "Chat with your PDFs" comes from the name. | Add features (RAG? embeddings? model?) and a real README. |
-| 4 | **DragShift's README is titled "ShiftDrop"**, a native macOS Swift rewrite of someone else's project. | Fetched both branches (identical). | Used its description (radial drop menu, Swift/AppKit/ImageIO/PDFKit) and credited upstream on the card. | Confirm the repo is yours to present as a project and that the name you want shown is "DragShift" (vs "ShiftDrop"). |
-| 5 | **Couldn't list your GitHub repos** (API blocked: "sessions are bound to their configured repositories"). | Tried `api.github.com/users/SarthakJain29/repos`. I did not guess URLs for the in-progress repos. | In-progress cards have `github: null` + `TODO(link)`. The five shipped repos link to `github.com/SarthakJain29/<name>`; their READMEs fetched OK via raw.githubusercontent.com, which confirms they exist. | Paste the in-progress repo URLs (or leave null if private). |
-| 6 | **godly.website / Awwwards listings gave thin results** through search; some pages timed out (`rykerhoward.com` 502). | Several searches; direct HTTP loads of 17 sites. | Research is based on verified loads + search snippets + prior knowledge, with limits stated openly in [Research](#research-what-i-looked-at-and-what-i-took-from-it). | Optional: browse godly.website yourself for more inspiration. |
-| 7 | **No project screenshots or live demos available.** | — | Generated per-project placeholder SVGs; `live: null` everywhere. | Add screenshots/demos (see [Editing content](#editing-content)). |
-| 8 | **`/resume.pdf` doesn't exist yet** (by design). | — | Button points at it per your spec; it 404s until the file is added. | Add `public/resume.pdf`. |
-| 9 | **`npm audit` reports 8 moderate advisories**, all in the *dev-time* ESLint/typescript-eslint toolchain (transitive deps of `eslint-config-next`). | Checked `npm audit`; the "fix" requires `--force` and would downgrade/break the lint config. | Left as is — they're dev-only and not shipped to the browser. Production dependencies (`next`, `react`, `react-dom`, `geist`) have no findings in my run. | Re-run `npm audit` / bump `eslint-config-next` later. |
-| 10 | **Lighthouse ran locally** (headless Chromium vs a local `next start`), not against Vercel. | — | Recorded those numbers. Real-world scores on Vercel's CDN should be equal or better. | Re-run on the deployed URL if you care about exact numbers. |
-| 11 | **vibrant.design has no components to scrape** — it's an inspiration gallery. | Loaded it and read its categories/titles. | Used it for layout/visual ideas only (bento, giant wordmark footer, tilt hero). | Nothing. |
-| 12 | **Aceternity's licence terms weren't confirmed** (`/license` and `/docs/faq` returned 404 and I didn't locate their licence text), and many of their blocks are paid Pro. | Fetched the public registry JSON of 11 free components and read four in detail (`spotlight-new`, `tracing-beam`, `text-hover-effect`, `card-spotlight`) purely to understand the techniques. | Re-implemented every pattern from scratch in this repo (no copied code, no `motion`/`three` dependency). | If you want to use their actual components, check their terms first. |
-
-FYI (not a blocker): QuickChat's public README contains a demo login. That's fine for a demo account, just be sure it's not a real credential.
+| # | What | What I did | What you need to do |
+| --- | --- | --- | --- |
+| 1 | **Diffwise evals have no headline results** (full eval never run; only a 5-case smoke test). | Described the methodology; showed dataset facts and judge validation with caveats. | Run `npm run evals -- run --reviewer baseline` and add a Results section; then put real numbers in `facts`. |
+| 2 | **Diffwise demo video is captions-only** (its README: narration lost to the Gemini TTS free-tier quota). | Dropped the silent track; no sound control. | Re-render with narration later and re-run the import script. |
+| 3 | **Demo videos show mock UIs, not the real apps.** | Captioned honestly. | Optional: record real screen captures. |
+| 4 | **Diffwise has no app screenshots** (the bot isn't built). | Rendered the committed `evals/reports/scoreboard.html` offline (network blocked) as a real artifact. | — |
+| 5 | **No live demos confirmed.** | `live: null // TODO(live)` for all 10. | Deploy and fill them in. |
+| 6 | **godly.website now redirects to recent.design** (a UI-shot feed), and rleonardi.com was refused by the proxy. | Rendered recent.design and used its relevant items; listed rleonardi from memory only (marked). | — |
+| 7 | **`/resume.pdf` doesn't exist yet** (by design). | Every Resume key points there. | Add `public/resume.pdf`. |
+| 8 | **`npm audit`: 8 moderate advisories, dev-only** (ESLint/typescript-eslint toolchain). Production dependencies: 0. | Left; the fix needs `--force` and breaks the lint config. | Re-check after future `eslint-config-next` releases. |
+| 9 | **Lighthouse ran locally**, not on Vercel. | Recorded local numbers. | Re-run on the deployed URL if you want exact figures. |
 
 ---
 
 ## TODO inventory
 
-Search for `TODO` in `src/data/site.ts`. Current list:
+Search `TODO` in `src/data/site.ts`:
 
-- [ ] `public/resume.pdf` — add your resume (profile.resumeUrl).
-- [ ] GitHub URLs for **Diffwise, MF X-ray, Notes Inbox, Similar Song AI, News Shorts** (`github: null`).
-- [ ] Live demo URLs for **QuickChat, MeetNote, AI-Blog-Generator, PDF_Chatbot** (`live: null`) — optional, if deployed.
-- [ ] Real screenshots to replace all 10 placeholder images in `public/projects/`.
-- [ ] Better descriptions for MeetNote, AI-Blog-Generator, PDF_Chatbot (their READMEs don't describe the products).
-- [ ] Optional: set `NEXT_PUBLIC_SITE_URL` on Vercel after you pick a final domain.
+- [ ] `public/resume.pdf`
+- [ ] Live URLs for all 10 projects (`live: null // TODO(live)`)
+- [ ] Decide branch vs `main` for the GitHub links once branches are merged
+- [ ] Diffwise: real results after a full eval run; narrated video
+- [ ] Optional: `NEXT_PUBLIC_SITE_URL` on Vercel
 
 ---
 
 ## Quality results
 
-Measured with Lighthouse 13 against a local production build (`next build && next start`), headless Chromium, v2 design.
+Local production build (`next build && next start`), Lighthouse 13, headless Chromium, 5 Nov 2026.
 
-| Run | Performance | Accessibility | Best practices | SEO | LCP | CLS | TBT |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| Desktop | 100 | 100 | 100 | 100 | 0.3 s | 0 | 50 ms |
-| Mobile (simulated slow 4G, 4× CPU) | 95–100 | 100 | 100 | 100 | 0.9 s | 0 | 90–240 ms |
+| Page | Run | Performance | Accessibility | Best practices | SEO | LCP | CLS | TBT |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `/` | Desktop | 100 | 100 | 100 | 100 | 0.3 s | 0.014 | 0 ms |
+| `/` | Mobile (slow 4G, 4× CPU) | 99 | 100 | 100 | 100 | 1.0 s | 0.001 | 110 ms |
+| `/plain` | Desktop | 100 | 100 | 100 | 100 | 0.2 s | 0 | 0 ms |
+| `/plain` | Mobile | 100 | 100 | 100 | 100 | 0.9 s | 0 | 50 ms |
 
-Other checks (Playwright): no console errors/warnings; no horizontal overflow at 1440 px and 390 px; default theme is dark even with an OS-light browser, toggle persists across reload; `⌘/Ctrl+K` opens the palette and Enter navigates (nav indicator follows); Konami fires the toast + 48 confetti pieces; glow cards track the pointer; stat numbers end on their final values; with `prefers-reduced-motion: reduce` the terminal renders fully at once, reveals are visible immediately, flip-words become a static sentence, meteors/aurora/beam are off, the marquee becomes a static wrapped list, and confetti is skipped.
+- **axe-core 4** (WCAG 2 A/AA + best practice), with transitions disabled so nothing is caught mid-fade: **0 violations** on `/` (day 1440, night 1440, night 390) and `/plain` (day, night).
+- **Playwright regression:** no console errors; layout viewport = device width at 360/390 px; Space/Enter toggle provider switches and focus stays put; CHAOS keeps focus; keys 1–6 jump channels and update `aria-current`; Konami → total outage → REBOOT + plain-view link; ⌘K "news shorts" → inspector opens with `#project-news-shorts`; ▸ goes to the next project; Esc closes and clears the hash; MF X-ray video plays unmuted from its button (`preload="none"` beforehand); Diffwise shows ▶ Play only; the MongoDB keycap lists QuickChat. With `prefers-reduced-motion`, the transcript is complete immediately, reveals are at opacity 1 and receipts aren't clipped.
 
-Accessibility notes: skip link, one `h1`, labelled landmarks/sections, visible focus rings, `aria-current` on the active nav link, external links announce "(opens in a new tab)", decorative elements `aria-hidden`, colour contrast AA in both themes, in-progress rail is a focusable labelled region, palette uses the ARIA combobox/listbox pattern on a native modal `<dialog>`.
+---
+
+## History (v1 → v2)
+
+- **v1** (Nov 4): a minimal Next.js portfolio, typed content file, command palette, SEO; a "graceful fallback" terminal in the hero. Research: 17 developer portfolios (Brittany Chiang, Lee Robinson, Rauno, Paco, Emil Kowalski, Josh Comeau, Lynn Fisher…).
+- **v2** (Nov 4): a dark glass UI with Aceternity-style effects written from scratch (spotlight, glow cards, tracing beam, flip words, wordmark). It was rejected as "too dark and generic, boring stacked sections", which led to v3.
+- Kept from v1/v2: the typed data file, SEO/OG/JSON-LD, the palette, the Konami egg and the "graceful fallback" idea, which went from a decoration to the whole concept.

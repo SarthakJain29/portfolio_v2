@@ -1,45 +1,40 @@
-# Sarthak Jain — Portfolio
+# Sarthak Jain: SJ-01 "Fallback Console" portfolio
 
-A dark-first, glassy personal portfolio with bento layouts, a floating nav, a command palette and a handful of playful interactions. Built with **Next.js, TypeScript and Tailwind**; Lighthouse 95–100; accessible; light/dark; deploy-ready for Vercel's free tier.
+A playful, tactile portfolio for a software engineer who works on **GenAI and LLM reliability**. The whole site is an instrument: flip the model-provider switches or hit **CHAOS**, and the console re-routes the request (Gemini → Groq → offline), so the answer still arrives. Turn everything off and it gracefully falls back to a plain-text résumé.
 
-![Hero: name reveal, flip-words line, tilting terminal card, aurora and beam background](docs/hero.jpg)
+Every project on it really works that way: each cartridge is labelled with the fallback chain from that project's README.
+
+![Hero: the console answering via fallback after the primary provider was switched off](docs/hero.jpg)
 
 <p>
-  <img src="docs/about.jpg" alt="Stat strip, tech marquee and bento About section" width="49%" />
-  <img src="docs/projects.jpg" alt="Featured project card with pointer-follow glow" width="49%" />
+  <img src="docs/rack.jpg" alt="Projects as a rack of colour-coded cartridges with real screenshots and fallback chains" width="49%" />
+  <img src="docs/inspector.jpg" alt="Project inspector: demo video, screenshots, engineering highlights and fallback chains" width="49%" />
 </p>
 <p>
-  <img src="docs/experience.jpg" alt="Experience timeline with a tracing beam" width="49%" />
-  <img src="docs/palette.jpg" alt="Command palette open over the hero" width="49%" />
+  <img src="docs/receipts.jpg" alt="Experience printed as thermal-printer receipts" width="49%" />
+  <img src="docs/hero-night.jpg" alt="Night mode" width="49%" />
 </p>
 <p>
-  <img src="docs/hero-light.jpg" alt="Light theme" width="64%" />
-  <img src="docs/mobile.jpg" alt="Mobile layout" width="30%" />
+  <img src="docs/mobile.jpg" alt="Mobile: handheld console with a bottom channel bar" width="24%" />
+  <img src="docs/mobile-inspector.jpg" alt="Mobile project inspector as a bottom sheet" width="24%" />
+  <img src="docs/plain.jpg" alt="Plain view: the whole site as a printable text page" width="48%" />
 </p>
-
-## Concept
-
-**"Graceful fallback."** The design is elegant and typographic (Geist + an italic serif accent, one indigo→violet→cyan accent), and the playful bits riff on one idea from my work: LLM reliability — when the primary model fails, fall back gracefully. Design notes, the portfolios and component libraries that inspired it (incl. [vibrant.design](https://vibrant.design) and [Aceternity UI](https://ui.aceternity.com)) are in [`developer.md`](developer.md#concept--research).
 
 ## Features
 
-- **Sections:** hero, stats + tech ticker, about (bento), experience (tracing beam), projects (featured + grid + in-progress rail), skills, education & achievements, contact
-- **Hero:** aurora, light beam, grid, meteors, pointer spotlight, word-by-word name reveal, rotating "I build …" line, 3D-tilting terminal that plays out a model failover (replayable)
-- **Glow cards:** borders and surfaces light up under the pointer
-- **Floating pill nav** with a sliding active indicator and a scroll-progress bar
-- **Command palette** — `⌘/Ctrl + K` (or `/`): jump anywhere, toggle theme, copy email, open repos
-- **Easter eggs** — the Konami code, `sudo hire sarthak` in the palette, and a footer wordmark that reveals a gradient under your cursor
-- **Dark / light mode**, no flash, remembers your choice (dark by default)
-- **Accessible:** skip link, semantic landmarks, visible focus, keyboard-first palette, AA contrast
-- **Respects `prefers-reduced-motion`** — all non-essential animation off
-- **SEO:** metadata, canonical, generated Open Graph/Twitter image, JSON-LD, sitemap, robots
-- **One typed content file** — edit [`src/data/site.ts`](src/data/site.ts) and everything updates
-- **Resume download** button (`/resume.pdf`)
-- Statically prerendered; no server, database or env vars required; **no animation/3D/UI libraries** — just CSS and small hooks
+- **Signature console:** an LCD streams an answer through a simulated provider route; three provider switches, a CHAOS button, a live route diagram and per-session counters. With every provider off it falls back to the plain view.
+- **10-second test:** name, role, Resume/Email and the **top 3 projects** (MF X-ray, News Shorts, Diffwise Evals) are all on the first screen.
+- **Projects as cartridges:** real screenshots, demo videos (lazy, muted hover preview, click for sound), the interesting engineering, stack, fallback chains, code links. The inspector is deep-linkable (`#project-mf-xray`); on phones it's a bottom sheet.
+- **Experience as receipts** that print on scroll. **Skills as keycaps**: press one to see which projects use it. **Achievements as stickers** you can drag.
+- **Plain view** at `/plain`: every word, no JS, printable. Cartridge links fall back to it without JavaScript.
+- **Day (default) and night themes**, characterful type (Bricolage Grotesque, Martian Mono, VT323), all self-hosted.
+- **Keyboard first:** real buttons and switches, keys **1–6** for channels, **⌘K** palette, Esc/Back closes the inspector. And there's a Konami code…
+- **Accessible and fast:** Lighthouse 99–100 in every category, 0 axe violations in both themes, and `prefers-reduced-motion` respected everywhere.
+- **SEO:** metadata, canonical, a generated OG image, JSON-LD, sitemap and robots.
 
-## Tech stack
+## Tech
 
-Next.js 16 (App Router) · React 19 · TypeScript (strict) · Tailwind CSS 4 · Geist & Instrument Serif fonts (self-hosted) · ESLint 9
+Next.js 16 (App Router, fully static) · React 19 · TypeScript (strict) · Tailwind CSS 4 · @fontsource fonts · no UI, animation or 3D libraries.
 
 ## Getting started
 
@@ -48,34 +43,20 @@ npm install
 npm run dev
 ```
 
-Open <http://localhost:3000>.
-
 ```bash
 npm run check   # typecheck + lint
 npm run build   # production build
-npm start       # serve the production build
 ```
 
 ## Customise
 
-1. Edit your content in [`src/data/site.ts`](src/data/site.ts) (profile, stats, experience, projects, skills, education).
-2. Add your resume at `public/resume.pdf`.
-3. Replace the placeholder images in `public/projects/` and update each project's `image` path.
-4. Search for `TODO` in `src/data/site.ts` for anything still missing.
+- All content lives in [`src/data/site.ts`](src/data/site.ts) (typed by [`src/data/types.ts`](src/data/types.ts)).
+- Put your résumé at `public/resume.pdf`.
+- Search `TODO` in `site.ts` for missing live links.
+- Re-import screenshots and videos from the project repos with `scripts/import-assets.py`.
 
-Full instructions: [`developer.md`](developer.md).
+Concept, research, screenshot critique, data sources, decisions and deploy steps are in [`developer.md`](developer.md).
 
 ## Deploy
 
-Import the repo at [vercel.com/new](https://vercel.com/new) — Next.js is auto-detected, no configuration needed. Optionally set `NEXT_PUBLIC_SITE_URL` to your final URL. Step-by-step in [`developer.md`](developer.md#deploy-to-vercel).
-
-## Project structure
-
-```
-src/data/site.ts       all content (typed)
-src/app/               layout, page, OG image, robots, sitemap, design tokens (globals.css)
-src/components/        sections, hero, nav, command palette, project card
-src/components/ui/     reusable effects: glow card, tilt, flip words, count-up, marquee, tracing beam, wordmark
-src/lib/               small helpers
-public/projects/       project images (placeholders — replace)
-```
+Import the repo at [vercel.com/new](https://vercel.com/new); no configuration is needed. Optionally set `NEXT_PUBLIC_SITE_URL`.
