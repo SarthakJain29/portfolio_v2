@@ -7,7 +7,7 @@ export function Manual() {
   const { profile, stats } = site;
   return (
     <section aria-labelledby="manual-title" className="mx-auto max-w-6xl px-3 py-10 sm:px-4">
-      <div className="grid gap-5 lg:grid-cols-12">
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
         <Reveal className="lg:col-span-7">
           <article className="relative h-full rotate-[-0.6deg] rounded-md bg-receipt p-6 text-[#17171a] shadow-[0_18px_30px_-18px_rgba(23,20,12,0.55)] sm:p-9">
             {/* fold line */}
@@ -25,7 +25,7 @@ export function Manual() {
         </Reveal>
 
         <Reveal delay={90} className="lg:col-span-5">
-          <div className="chassis grid h-full gap-3 p-5 sm:p-6">
+          <div className="chassis grid grid-cols-1 h-full gap-3 p-5 sm:p-6">
             <div className="lcd flex items-center justify-between px-4 py-3">
               <span className="text-[1.05rem] text-lcd-dim">HYDERABAD · LOCAL</span>
               <span className="text-4xl leading-none">

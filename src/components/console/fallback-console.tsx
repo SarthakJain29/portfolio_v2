@@ -157,9 +157,9 @@ export function FallbackConsole({ facts }: { facts: ConsoleFacts }) {
   };
 
   return (
-    <div className="grid gap-5 lg:grid-cols-12 lg:gap-6">
+    <div className="grid grid-cols-1 gap-4">
       {/* LCD */}
-      <div className="lg:col-span-7">
+      <div>
         <div className="lcd p-4 sm:p-5" role="region" aria-label="Console display">
           <div className="mb-2 flex items-center justify-between text-[0.95rem] text-lcd-dim">
             <span>SJ-01 · SIMULATED MODEL ROUTE</span>
@@ -174,7 +174,7 @@ export function FallbackConsole({ facts }: { facts: ConsoleFacts }) {
                   .join(" ")}`
               : "All providers are down. The console falls back to the plain view."}
           </div>
-          <div aria-hidden className="min-h-[11.5rem] space-y-0.5 text-[1.15rem] leading-snug sm:min-h-[10rem] sm:text-[1.3rem]">
+          <div aria-hidden className="min-h-[12.5rem] space-y-0.5 text-[1.15rem] leading-snug sm:text-[1.2rem]">
             {visible.map((l, i) => (
               <p key={i} className={`${tone[l.tone]} ${l.text.length === 0 ? "invisible" : ""}`}>
                 <span className={!l.done && streaming && l.text.length > 0 ? "caret" : ""}>{l.text || "."}</span>
@@ -197,10 +197,10 @@ export function FallbackConsole({ facts }: { facts: ConsoleFacts }) {
       </div>
 
       {/* Control panel */}
-      <div className="well p-4 sm:p-5 lg:col-span-5">
+      <div className="well p-4 sm:p-5">
         <div className="flex items-center justify-between">
           <p className="label">Provider route</p>
-          <p className="label hidden sm:block">Flip a switch, or press chaos</p>
+          <p className="label">Flip a switch ↓</p>
         </div>
 
         {/* Route diagram */}
@@ -230,7 +230,7 @@ export function FallbackConsole({ facts }: { facts: ConsoleFacts }) {
         </div>
 
         {/* Switches */}
-        <ul className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-1 sm:gap-2.5">
+        <ul className="mt-4 grid grid-cols-3 gap-2">
           {ORDER.map((id) => {
             const st = nodeState(id);
             return (
@@ -240,10 +240,10 @@ export function FallbackConsole({ facts }: { facts: ConsoleFacts }) {
                   role="switch"
                   aria-checked={on[id]}
                   onClick={() => flip(id)}
-                  className="flex w-full flex-col items-center gap-2 rounded-xl bg-chassis px-2 py-3 text-left shadow-[0_1px_0_var(--line-2)] transition-colors hover:bg-chassis-2 sm:flex-row sm:px-3 sm:py-2.5"
+                  className="flex w-full flex-col items-center gap-2 rounded-xl bg-chassis px-2 py-3 shadow-[0_1px_0_var(--line-2)] transition-colors hover:bg-chassis-2"
                 >
-                  <span className="led" data-state={st === "on" ? "on" : st === "err" ? "err" : on[id] ? "warn" : "off"} aria-hidden />
-                  <span className="flex-1 text-center sm:text-left">
+                  <span className="led" data-state={st === "on" ? "on" : st === "err" ? "err" : on[id] ? "standby" : "off"} aria-hidden />
+                  <span className="text-center">
                     <span className="block text-sm font-semibold leading-tight">{PROVIDERS[id].name}</span>
                     <span className="label !text-[0.58rem]">{PROVIDERS[id].model}</span>
                   </span>

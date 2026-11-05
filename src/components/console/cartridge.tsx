@@ -6,7 +6,7 @@ import { dims } from "@/lib/media";
 export function StatusLamp({ status }: { status: Project["status"] }) {
   const built = status === "built";
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#17171a] px-2 py-0.5 font-mono text-[0.58rem] font-semibold uppercase tracking-wider text-[#fffdf6]">
+    <span className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-[#17171a] px-2 py-0.5 font-mono text-[0.58rem] font-semibold uppercase tracking-wider text-[#fffdf6]">
       <span className="led !size-[7px]" data-state={built ? "on" : "warn"} aria-hidden />
       {built ? "Built" : "In progress"}
     </span>
@@ -35,11 +35,11 @@ export function SlotCartridge({ p, index }: { p: Project; index: number }) {
   return (
     <a href={`/plain#${p.slug}`} data-project={p.slug} className={`cart c-${p.color} group h-full`}>
       <span className="flex items-center justify-between gap-2">
-        <span className="font-mono text-[0.6rem] font-bold uppercase tracking-widest">Cart 0{index + 1}</span>
+        <span className="whitespace-nowrap font-mono text-[0.6rem] font-bold uppercase tracking-widest">Cart 0{index + 1}</span>
         <StatusLamp status={p.status} />
       </span>
       <span className="cart-sticker mt-2 flex flex-1 flex-col p-3">
-        <span className="font-mono text-[0.56rem] font-semibold uppercase tracking-widest text-[#6b675d]">{p.label}</span>
+        <span className="truncate font-mono text-[0.56rem] font-semibold uppercase tracking-widest text-[#6b675d]">{p.label}</span>
         <span className="mt-1 text-2xl font-extrabold leading-none tracking-tight [font-stretch:80%]">{p.title}</span>
         <span className="mt-1.5 line-clamp-2 text-[0.82rem] leading-snug text-[#4a4740]">{p.tagline}</span>
         <span className="mt-auto flex items-center justify-between gap-2 pt-3">
@@ -96,7 +96,7 @@ export function RackCartridge({ p, index }: { p: Project; index: number }) {
   return (
     <a href={`/plain#${p.slug}`} data-project={p.slug} className={`cart c-${p.color} group h-full`}>
       <span className="flex items-center justify-between gap-2 px-1">
-        <span className="font-mono text-[0.6rem] font-bold uppercase tracking-widest">
+        <span className="min-w-0 truncate font-mono text-[0.6rem] font-bold uppercase tracking-widest">
           {p.featured ? "★ " : ""}
           {String(index + 1).padStart(2, "0")} · {p.label}
         </span>

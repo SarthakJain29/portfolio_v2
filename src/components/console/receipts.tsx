@@ -15,7 +15,7 @@ export function Receipts() {
         </>
       }
     >
-      <ol className="grid items-start gap-8 md:grid-cols-2">
+      <ol className="grid grid-cols-1 items-start gap-8 md:grid-cols-2">
         {site.experience.map((job, i) => (
           <Reveal as="li" key={job.company} delay={i * 120} className={i % 2 ? "md:mt-16 md:rotate-[1deg]" : "md:-rotate-[0.8deg]"}>
             <article className="receipt print" aria-labelledby={`job-${i}`}>

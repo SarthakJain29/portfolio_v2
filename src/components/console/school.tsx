@@ -11,11 +11,10 @@ const ROT = [-6, 5, -3, 8, -8, 3];
 /** Channel 5: education as a warranty card, achievements as stickers. */
 export function School() {
   const { education: ed, achievements } = site;
-  const items: StickerItem[] = [
-    ...achievements.map((a) => ({ title: a.title, detail: a.detail })),
-    ...ed.details.map((d) => ({ title: d, detail: "Bennett University" })),
-  ].map((x, i) => ({
-    ...x,
+  // CGPA and scholarship already sit on the warranty card, so stickers are achievements only.
+  const items: StickerItem[] = achievements.map((a, i) => ({
+    title: a.title,
+    detail: a.detail,
     color: COLORS[i % COLORS.length]!,
     shape: SHAPES[i % SHAPES.length]!,
     rotate: ROT[i % ROT.length]!,
@@ -32,7 +31,7 @@ export function School() {
         </>
       }
     >
-      <div className="grid gap-6 lg:grid-cols-12">
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
         <Reveal className="lg:col-span-5">
           <article className="relative h-full overflow-hidden rounded-2xl border-2 border-dashed border-line-2 bg-receipt p-6 text-[#17171a] sm:p-8">
             <p className="font-mono text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-[#6b675d]">Warranty card · education</p>
@@ -50,12 +49,12 @@ export function School() {
                 </div>
               ))}
             </dl>
-            <span aria-hidden className="absolute -right-6 -top-6 grid size-28 rotate-12 place-items-center rounded-full border-4 border-[#0b6e3c] font-mono text-[0.6rem] font-bold uppercase text-[#0b6e3c]">
+            <span aria-hidden className="absolute -right-6 -top-6 grid grid-cols-1 size-28 rotate-12 place-items-center rounded-full border-4 border-[#0b6e3c] font-mono text-[0.6rem] font-bold uppercase text-[#0b6e3c]">
               Passed QA
             </span>
           </article>
         </Reveal>
-        <Reveal delay={100} className="chassis screws grid place-items-center px-4 py-10 lg:col-span-7">
+        <Reveal delay={100} className="chassis screws grid grid-cols-1 place-items-center px-4 py-10 lg:col-span-7">
           <h3 className="sr-only">Achievements</h3>
           <Stickers items={items} />
           <p className="label mt-6 hidden md:block">Psst: the stickers peel off. Drag them.</p>

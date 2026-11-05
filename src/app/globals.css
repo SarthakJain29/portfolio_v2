@@ -234,6 +234,9 @@ body {
     box-shadow: 0 0 10px var(--yellow);
     animation: blink 1s steps(2) infinite;
   }
+  .led[data-state="standby"] {
+    background: color-mix(in srgb, var(--green) 45%, var(--led-off));
+  }
   .led[data-state="err"] {
     background: var(--red);
     box-shadow: 0 0 10px var(--red);
@@ -477,7 +480,8 @@ body {
   clip-path: inset(0 0 100% 0);
   transition: clip-path 1.1s steps(18, end);
 }
-.js .print.in {
+.js .print.in,
+.js .in .print {
   clip-path: inset(0 0 0 0);
 }
 

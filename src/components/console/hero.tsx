@@ -21,28 +21,28 @@ export function Hero() {
           <p className="label hidden sm:block">Now: {profile.now.role} @ {profile.now.company}</p>
         </div>
 
-        {/* Name & role */}
-        <div className="mt-5 grid gap-6 lg:grid-cols-12 lg:items-end">
-          <div className="rise lg:col-span-8" style={rise(60)}>
+        <div className="mt-5 grid grid-cols-1 gap-7 lg:grid-cols-12 lg:gap-8">
+          {/* Left: who, what, essentials, top 3 (the 10-second column) */}
+          <div className="flex flex-col lg:col-span-7">
             <h1
               id="console-title"
-              className="text-[clamp(3.4rem,13vw,8.75rem)] font-extrabold leading-[0.82] tracking-[-0.035em] [font-stretch:76%]"
+              className="rise text-[clamp(3.4rem,12vw,7.4rem)] font-extrabold leading-[0.82] tracking-[-0.035em] [font-stretch:76%]"
+              style={rise(60)}
             >
-              Sarthak
-              <br />
-              Jain<span className="text-t-orange">.</span>
+              Sarthak Jain<span className="text-t-orange">.</span>
             </h1>
-          </div>
-          <div className="rise lg:col-span-4" style={rise(140)}>
-            <p className="inline-flex rounded-lg bg-ink px-2.5 py-1 font-mono text-xs font-semibold uppercase tracking-widest text-chassis">
-              {profile.role}
-            </p>
-            <p className="mt-3 text-lg font-medium leading-snug sm:text-xl">
-              Full-stack (MERN + TypeScript), now building <mark className="rounded bg-yellow px-1 text-[#17171a]">GenAI apps</mark>{" "}
-              that keep working when the model doesn&apos;t.
+            <div className="rise mt-5 flex flex-wrap items-center gap-x-3 gap-y-2" style={rise(120)}>
+              <p className="inline-flex rounded-lg bg-ink px-2.5 py-1 font-mono text-xs font-semibold uppercase tracking-widest text-chassis">
+                {profile.role}
+              </p>
+              <p className="label">GenAI · LLM reliability · APIs</p>
+            </div>
+            <p className="rise mt-3 max-w-xl text-lg font-medium leading-snug sm:text-xl" style={rise(160)}>
+              Full-stack (MERN + TypeScript), now building{" "}
+              <mark className="rounded bg-yellow px-1 text-[#17171a]">GenAI apps</mark> that keep working when the model doesn&apos;t.
             </p>
             {/* Essentials, always one tap away */}
-            <div className="mt-5 flex flex-wrap gap-2.5">
+            <div className="rise mt-5 flex flex-wrap gap-2.5" style={rise(200)}>
               <a href={profile.resumeUrl} download className="key key-orange text-sm">
                 <DownloadIcon /> Resume
               </a>
@@ -56,38 +56,38 @@ export function Hero() {
                 <LinkedinIcon />
               </a>
             </div>
-          </div>
-        </div>
 
-        {/* The signature: simulated model fallback */}
-        <div className="rise mt-7" style={rise(220)}>
-          <FallbackConsole
-            facts={{
-              name: profile.name,
-              role: profile.role,
-              company: profile.now.company,
-              location: profile.location,
-              top: featured.map((p) => p.title),
-            }}
-          />
-        </div>
-
-        {/* Cartridge slot: top 3 projects */}
-        <div className="mt-8">
-          <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <h2 className="label !text-[0.7rem] !text-ink">Cartridge slot · top 3 projects</h2>
-            <a href="#projects" className="label inline-flex items-center gap-1 hover:!text-ink">
-              All {projects.length} projects <ArrowUpRight />
-            </a>
+            {/* Cartridge slot: top 3 projects */}
+            <div className="rise mt-7 lg:mt-auto lg:pt-7" style={rise(240)}>
+              <div className="flex flex-wrap items-baseline justify-between gap-2">
+                <h2 className="label !text-[0.7rem] !text-ink">Cartridge slot · top 3 projects</h2>
+                <a href="#projects" className="label inline-flex items-center gap-1 hover:!text-ink">
+                  All {projects.length} projects <ArrowUpRight />
+                </a>
+              </div>
+              <div className="well -mx-1 mt-3 overflow-x-auto p-3 sm:mx-0">
+                <ul className="flex snap-x snap-mandatory gap-3 sm:grid sm:grid-cols-3">
+                  {featured.map((p, i) => (
+                    <li key={p.slug} className="w-[74vw] max-w-[300px] shrink-0 snap-start sm:w-auto sm:max-w-none">
+                      <SlotCartridge p={p} index={i} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
           </div>
-          <div className="well -mx-1 mt-3 overflow-x-auto p-3 sm:mx-0">
-            <ul className="flex snap-x snap-mandatory gap-3 sm:grid sm:grid-cols-3">
-              {featured.map((p, i) => (
-                <li key={p.slug} className="w-[78vw] max-w-[320px] shrink-0 snap-start sm:w-auto sm:max-w-none">
-                  <SlotCartridge p={p} index={i} />
-                </li>
-              ))}
-            </ul>
+
+          {/* Right: the signature, simulated model fallback */}
+          <div className="rise lg:col-span-5" style={rise(180)}>
+            <FallbackConsole
+              facts={{
+                name: profile.name,
+                role: profile.role,
+                company: profile.now.company,
+                location: profile.location,
+                top: featured.map((p) => p.title),
+              }}
+            />
           </div>
         </div>
       </div>

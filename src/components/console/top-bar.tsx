@@ -47,7 +47,7 @@ export function TopBar() {
       <header className="no-print fixed inset-x-0 top-0 z-40 px-2 pt-2 sm:px-4 sm:pt-3">
         <div className="chassis mx-auto flex h-14 max-w-6xl items-center justify-between gap-2 !rounded-2xl px-2 sm:px-3">
           <a href="#console" className="flex items-center gap-2 rounded-xl px-1.5 py-1" aria-label="Sarthak Jain: back to the console">
-            <span aria-hidden className="grid size-8 place-items-center rounded-lg bg-orange font-mono text-[0.7rem] font-bold text-[#17171a]">
+            <span aria-hidden className="grid grid-cols-1 size-8 place-items-center rounded-lg bg-orange font-mono text-[0.7rem] font-bold text-[#17171a]">
               SJ
             </span>
             <span className="hidden font-semibold tracking-tight [font-stretch:85%] lg:inline">Sarthak Jain</span>
@@ -69,7 +69,7 @@ export function TopBar() {
                         on ? "bg-ink text-chassis" : "text-ink-2 hover:bg-chassis-2 hover:text-ink"
                       }`}
                     >
-                      <span aria-hidden className={`font-mono text-[0.62rem] ${on ? "text-yellow" : "text-ink-3"}`}>
+                      <span aria-hidden className={`font-mono text-[0.62rem] ${on ? "opacity-60" : "text-ink-3"}`}>
                         {s.key}
                       </span>
                       {s.label}
@@ -111,7 +111,7 @@ export function TopBar() {
                     on ? "bg-ink text-chassis" : "text-ink-2"
                   }`}
                 >
-                  <span aria-hidden className={`font-mono text-[0.7rem] ${on ? "text-yellow" : "text-ink-3"}`}>
+                  <span aria-hidden className={`font-mono text-[0.7rem] ${on ? "opacity-60" : "text-ink-3"}`}>
                     {s.key}
                   </span>
                   {s.label === "Experience" ? "Work" : s.label === "Education" ? "School" : s.label}

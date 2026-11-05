@@ -26,11 +26,12 @@ function usedIn(skill: string, projects: Project[]) {
 
 /** Channel 4: skills as a mechanical keyboard. Press a key to see where it's used. */
 export function Keyboard({ groups, projects }: { groups: SkillGroup[]; projects: Project[] }) {
-  const [skill, setSkill] = useState<string | null>(null);
+  // Start with a key already pressed so the readout shows what it does.
+  const [skill, setSkill] = useState<string | null>("TypeScript");
   const hits = skill ? usedIn(skill, projects) : [];
 
   return (
-    <div className="grid gap-5 lg:grid-cols-12">
+    <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
       <div className="chassis p-4 sm:p-6 lg:col-span-8">
         <div className="space-y-4">
           {groups.map((g, gi) => (

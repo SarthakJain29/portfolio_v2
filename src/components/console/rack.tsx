@@ -18,7 +18,7 @@ export function Rack() {
       }
       lead="Insert any cartridge to see real screenshots, demo videos, the interesting engineering and its fallback chain, all taken from each project's README."
     >
-      <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {projects.map((p, i) => (
           <Reveal as="li" key={p.slug} delay={(i % 3) * 70}>
             <RackCartridge p={p} index={i} />
