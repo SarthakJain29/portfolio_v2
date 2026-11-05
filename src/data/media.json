@@ -1,0 +1,110 @@
+{
+  "/projects/diffwise/demo-frame.webp": {
+    "w": 1600,
+    "h": 900
+  },
+  "/projects/diffwise/scoreboard.webp": {
+    "w": 1600,
+    "h": 1000
+  },
+  "/projects/dragshift/drag-drop.webp": {
+    "w": 1600,
+    "h": 1125
+  },
+  "/projects/dragshift/radial-menu.webp": {
+    "w": 1600,
+    "h": 1125
+  },
+  "/projects/folio/chat.webp": {
+    "w": 1600,
+    "h": 1012
+  },
+  "/projects/folio/viewer.webp": {
+    "w": 1600,
+    "h": 1012
+  },
+  "/projects/meetnote/home.webp": {
+    "w": 1360,
+    "h": 900
+  },
+  "/projects/meetnote/tasks.webp": {
+    "w": 1360,
+    "h": 900
+  },
+  "/projects/meetnote/transcript.webp": {
+    "w": 1360,
+    "h": 900
+  },
+  "/projects/mf-xray/ask-mobile.webp": {
+    "w": 720,
+    "h": 1558
+  },
+  "/projects/mf-xray/costs-mobile.webp": {
+    "w": 720,
+    "h": 1558
+  },
+  "/projects/mf-xray/dashboard.webp": {
+    "w": 1600,
+    "h": 1000
+  },
+  "/projects/mf-xray/overlap.webp": {
+    "w": 1600,
+    "h": 1000
+  },
+  "/projects/news-shorts/catchup.webp": {
+    "w": 589,
+    "h": 990
+  },
+  "/projects/news-shorts/feed.webp": {
+    "w": 589,
+    "h": 990
+  },
+  "/projects/news-shorts/onboarding.webp": {
+    "w": 589,
+    "h": 990
+  },
+  "/projects/news-shorts/visual.webp": {
+    "w": 589,
+    "h": 990
+  },
+  "/projects/notes-inbox/capture.webp": {
+    "w": 720,
+    "h": 1695
+  },
+  "/projects/notes-inbox/search.webp": {
+    "w": 720,
+    "h": 1248
+  },
+  "/projects/quickchat/chat-ai.webp": {
+    "w": 1600,
+    "h": 1000
+  },
+  "/projects/quickchat/chat-mobile.webp": {
+    "w": 720,
+    "h": 1558
+  },
+  "/projects/scribeai/landing.webp": {
+    "w": 1600,
+    "h": 1000
+  },
+  "/projects/scribeai/studio.webp": {
+    "w": 1600,
+    "h": 1000
+  },
+  "/projects/similar-song-ai/journey.webp": {
+    "w": 1600,
+    "h": 1000
+  },
+  "/projects/similar-song-ai/results.webp": {
+    "w": 1600,
+    "h": 1000
+  },
+  "/video/diffwise-poster.webp": {
+    "w": 1280,
+    "h": 720
+  },
+  "/video/mf-xray-poster.webp": {
+    "w": 1280,
+    "h": 720
+  }
+}
