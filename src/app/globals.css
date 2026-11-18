@@ -1,0 +1,628 @@
+@import "tailwindcss";
+
+/* ══ "The Fallback Console" design tokens ════════════════════════════════
+   Day (light, default) is a warm off-white instrument on a paper desk with
+   signal colours; Night is the same hardware in graphite with a glowing LCD.
+   ═══════════════════════════════════════════════════════════════════════ */
+:root {
+  --paper: #ebe5d8;
+  --chassis: #f7f4ee;
+  --chassis-2: #e9e3d6;
+  --well: #ddd5c5;
+  --ink: #17171a;
+  --ink-2: #4a4740;
+  --ink-3: #5e5a50; /* ≥ 4.8:1 on paper, chassis and the darker inset wells */
+  --line: rgba(23, 23, 26, 0.14);
+  --line-2: rgba(23, 23, 26, 0.26);
+  --shadow: 23, 20, 12;
+
+  --orange: #ff5a1f;
+  --blue: #2d5bff;
+  --yellow: #ffc21a;
+  --green: #1fb46a;
+  --pink: #ff7ab6;
+  --violet: #8e6bff;
+  --red: #d22a23; /* white text on it ≈ 4.9:1 */
+  --led-off: #b9b1a1;
+  /* Coloured *text* needs darker variants on the light paper to pass WCAG AA. */
+  --t-orange: #b93a0b;
+  --t-green: #0b6e3c;
+  --t-violet: #5b36d6;
+  --t-blue: #1f45d6;
+  --t-red: #b42318;
+
+  --lcd: #c5d3a0;
+  --lcd-ink: #1e2a10;
+  --lcd-dim: #55663a;
+  --receipt: #fffdf6;
+  --key: #fbf9f4;
+  --key-edge: #cfc6b4;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --paper: #111113;
+  --chassis: #1d1d21;
+  --chassis-2: #26262b;
+  --well: #141417;
+  --ink: #f2eee5;
+  --ink-2: #c3bdb0;
+  --ink-3: #958f83;
+  --line: rgba(242, 238, 229, 0.12);
+  --line-2: rgba(242, 238, 229, 0.24);
+  --shadow: 0, 0, 0;
+  --led-off: #3d3d44;
+  --t-orange: #ff7a45;
+  --t-green: #4cd88e;
+  --t-violet: #b39bff;
+  --t-blue: #8aa6ff;
+  --t-red: #ff7b73;
+  --lcd: #0c150c;
+  --lcd-ink: #8cf47a;
+  --lcd-dim: #4f8f45;
+  --receipt: #f4efe3;
+  --key: #2b2b31;
+  --key-edge: #0d0d0f;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-chassis: var(--chassis);
+  --color-chassis-2: var(--chassis-2);
+  --color-well: var(--well);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+  --color-orange: var(--orange);
+  --color-blue: var(--blue);
+  --color-yellow: var(--yellow);
+  --color-green: var(--green);
+  --color-pink: var(--pink);
+  --color-violet: var(--violet);
+  --color-red: var(--red);
+  --color-t-orange: var(--t-orange);
+  --color-t-green: var(--t-green);
+  --color-t-violet: var(--t-violet);
+  --color-t-blue: var(--t-blue);
+  --color-t-red: var(--t-red);
+  --color-lcd: var(--lcd);
+  --color-lcd-ink: var(--lcd-ink);
+  --color-lcd-dim: var(--lcd-dim);
+  --color-receipt: var(--receipt);
+  --font-sans: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-label), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-lcd: var(--font-pixel), ui-monospace, monospace;
+}
+
+/* ══ Base ═══════════════════════════════════════════════════════════════ */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+  background: var(--paper);
+}
+
+body {
+  background-color: var(--paper);
+  /* Faint engineering-paper grid: the "desk" the instrument sits on. */
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 32px 32px;
+  background-position: -1px -1px;
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--yellow);
+  color: #17171a;
+}
+
+@layer base {
+  :focus-visible {
+    outline: 3px solid var(--blue);
+    outline-offset: 3px;
+    border-radius: 8px;
+  }
+  :root[data-theme="dark"] :focus-visible {
+    outline-color: var(--yellow);
+  }
+}
+
+@layer components {
+  /* Tiny printed hardware label */
+  .label {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  /* ── Chassis: a raised panel of the instrument ─────────────────────── */
+  .chassis {
+    position: relative;
+    background: var(--chassis);
+    border: 1px solid var(--line-2);
+    border-radius: 28px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.7),
+      inset 0 -3px 0 rgba(var(--shadow), 0.06),
+      0 1px 0 rgba(var(--shadow), 0.08),
+      0 24px 48px -24px rgba(var(--shadow), 0.35);
+  }
+  :root[data-theme="dark"] .chassis {
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      0 24px 48px -24px rgba(0, 0, 0, 0.8);
+  }
+  /* Corner screws */
+  .screws::before,
+  .screws::after {
+    content: "";
+    position: absolute;
+    top: 14px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background:
+      linear-gradient(45deg, transparent 44%, var(--line-2) 44% 56%, transparent 56%),
+      radial-gradient(circle at 35% 35%, var(--chassis), var(--well));
+    box-shadow: inset 0 0 0 1px var(--line-2);
+  }
+  .screws::before {
+    left: 14px;
+  }
+  .screws::after {
+    right: 14px;
+  }
+
+  .well {
+    background: var(--well);
+    border-radius: 18px;
+    box-shadow: inset 0 2px 6px rgba(var(--shadow), 0.18);
+  }
+
+  /* ── LCD ────────────────────────────────────────────────────────────── */
+  .lcd {
+    position: relative;
+    background: var(--lcd);
+    color: var(--lcd-ink);
+    font-family: var(--font-lcd);
+    border-radius: 14px;
+    box-shadow:
+      inset 0 3px 10px rgba(0, 0, 0, 0.25),
+      inset 0 0 0 2px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+  .lcd::after {
+    /* scanlines + pixel grid */
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.05) 0 1px, transparent 1px 3px);
+  }
+  :root[data-theme="dark"] .lcd {
+    text-shadow: 0 0 6px rgba(140, 244, 122, 0.45);
+  }
+
+  /* ── LED ────────────────────────────────────────────────────────────── */
+  .led {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--led-off);
+    box-shadow: inset 0 -1px 2px rgba(0, 0, 0, 0.3);
+    flex: none;
+  }
+  .led[data-state="on"] {
+    background: var(--green);
+    box-shadow:
+      0 0 0 2px color-mix(in srgb, var(--green) 25%, transparent),
+      0 0 10px var(--green);
+  }
+  .led[data-state="warn"] {
+    background: var(--yellow);
+    box-shadow: 0 0 10px var(--yellow);
+    animation: blink 1s steps(2) infinite;
+  }
+  .led[data-state="standby"] {
+    background: color-mix(in srgb, var(--green) 45%, var(--led-off));
+  }
+  .led[data-state="err"] {
+    background: var(--red);
+    box-shadow: 0 0 10px var(--red);
+  }
+
+  /* ── Toggle switch (role="switch") ──────────────────────────────────── */
+  .toggle {
+    position: relative;
+    width: 58px;
+    height: 32px;
+    border-radius: 999px;
+    background: var(--well);
+    box-shadow: inset 0 2px 5px rgba(var(--shadow), 0.3);
+    transition: background 0.2s ease;
+    flex: none;
+  }
+  .toggle::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #fff, #e8e2d6);
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.3),
+      inset 0 -2px 0 rgba(0, 0, 0, 0.08);
+    transition: transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .toggle[aria-checked="true"],
+  .toggle[data-on="true"] {
+    background: var(--green);
+  }
+  .toggle[aria-checked="true"]::after,
+  .toggle[data-on="true"]::after {
+    transform: translateX(26px);
+  }
+  .toggle-sm {
+    width: 46px;
+    height: 26px;
+  }
+  .toggle-sm::after {
+    width: 20px;
+    height: 20px;
+  }
+  .toggle-sm[data-on="true"]::after {
+    transform: translateX(20px);
+  }
+  .toggle-night[data-on="true"] {
+    background: var(--violet);
+  }
+
+  /* ── Keycap ─────────────────────────────────────────────────────────── */
+  .key {
+    --kc: var(--key);
+    --kt: var(--ink);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 44px;
+    padding: 0.55rem 1rem 0.7rem;
+    border-radius: 12px;
+    background: var(--kc);
+    color: var(--kt);
+    font-weight: 650;
+    border: 1px solid var(--line-2);
+    box-shadow:
+      inset 0 -5px 0 rgba(0, 0, 0, 0.1),
+      0 4px 0 var(--key-edge),
+      0 8px 14px -6px rgba(var(--shadow), 0.45);
+    transform: translateY(0);
+    transition:
+      transform 0.08s ease,
+      box-shadow 0.08s ease,
+      background 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .key:hover {
+    transform: translateY(-1px);
+  }
+  .key:active,
+  .key[aria-pressed="true"] {
+    transform: translateY(3px);
+    box-shadow:
+      inset 0 -2px 0 rgba(0, 0, 0, 0.12),
+      0 1px 0 var(--key-edge),
+      0 2px 4px -2px rgba(var(--shadow), 0.4);
+  }
+  .key-orange {
+    --kc: var(--orange);
+    --kt: #17171a;
+  }
+  .key-blue {
+    --kc: var(--blue);
+    --kt: #fff;
+  }
+  .key-yellow {
+    --kc: var(--yellow);
+    --kt: #17171a;
+  }
+  .key-green {
+    --kc: var(--green);
+    --kt: #17171a;
+  }
+  .key-ink {
+    --kc: var(--ink);
+    --kt: var(--chassis);
+  }
+
+  /* ── Cartridge ──────────────────────────────────────────────────────── */
+  .cart {
+    --c: var(--orange);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background: var(--c);
+    color: #17171a;
+    border-radius: 18px 18px 10px 10px;
+    padding: 22px 12px 12px;
+    box-shadow:
+      inset 0 2px 0 rgba(255, 255, 255, 0.35),
+      inset 0 -8px 0 rgba(0, 0, 0, 0.12),
+      0 14px 24px -14px rgba(var(--shadow), 0.55);
+    transition:
+      transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 0.25s ease;
+  }
+  .cart::before {
+    /* grip ridges */
+    content: "";
+    position: absolute;
+    top: 7px;
+    left: 50%;
+    width: 46%;
+    height: 9px;
+    transform: translateX(-50%);
+    background: repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.18) 0 2px, transparent 2px 7px);
+    border-radius: 3px;
+  }
+  .cart-sticker {
+    background: #fffdf6;
+    border-radius: 10px;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+    color: #17171a;
+  }
+  a.cart:hover,
+  a.cart:focus-visible {
+    transform: translateY(-6px) rotate(-0.6deg);
+    box-shadow:
+      inset 0 2px 0 rgba(255, 255, 255, 0.35),
+      inset 0 -8px 0 rgba(0, 0, 0, 0.12),
+      0 26px 34px -16px rgba(var(--shadow), 0.6);
+  }
+  .c-orange {
+    --c: var(--orange);
+  }
+  .c-blue {
+    --c: var(--blue);
+  }
+  .c-yellow {
+    --c: var(--yellow);
+  }
+  .c-green {
+    --c: var(--green);
+  }
+  .c-pink {
+    --c: var(--pink);
+  }
+  .c-violet {
+    --c: var(--violet);
+  }
+
+  /* ── Receipt (thermal printer paper) ────────────────────────────────── */
+  .receipt {
+    position: relative;
+    background: var(--receipt);
+    color: #17171a;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    line-height: 1.65;
+    padding: 28px 24px 40px;
+    box-shadow: 0 18px 30px -18px rgba(var(--shadow), 0.55);
+    /* torn zig-zag bottom edge */
+    --zz: 12px;
+    -webkit-mask:
+      conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / var(--zz) 100%;
+    mask:
+      conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / var(--zz) 100%;
+  }
+  .receipt hr {
+    border: 0;
+    border-top: 1.5px dashed rgba(23, 23, 26, 0.4);
+    margin: 14px 0;
+  }
+  .barcode {
+    height: 34px;
+    background: repeating-linear-gradient(
+      90deg,
+      #17171a 0 2px,
+      transparent 2px 4px,
+      #17171a 4px 5px,
+      transparent 5px 8px,
+      #17171a 8px 11px,
+      transparent 11px 12px
+    );
+  }
+
+  /* ── Sticker ────────────────────────────────────────────────────────── */
+  .sticker {
+    position: relative;
+    color: #17171a;
+    border: 3px solid #fffdf6;
+    box-shadow: 0 6px 14px -6px rgba(var(--shadow), 0.55);
+    touch-action: none;
+    user-select: none;
+    transition: box-shadow 0.2s ease;
+  }
+  .sticker[data-dragging="true"] {
+    box-shadow: 0 18px 28px -10px rgba(var(--shadow), 0.6);
+    z-index: 10;
+  }
+}
+
+/* ══ Route diagram: the live wire marches toward the serving provider ═══ */
+.route-wire {
+  background: repeating-linear-gradient(90deg, currentColor 0 6px, transparent 6px 10px);
+  background-size: 10px 2px;
+  animation: wire 0.5s linear infinite;
+}
+.caret::after {
+  content: "▌";
+  margin-left: 2px;
+  animation: blink 1s steps(2) infinite;
+}
+
+/* Receipt "prints" (unrolls) when revealed */
+.js .print {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 1.1s steps(18, end);
+}
+.js .print.in,
+.js .in .print {
+  clip-path: inset(0 0 0 0);
+}
+
+/* ══ Scroll reveal (JS only, so no-JS users still see content) ══════════ */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.34, 1.4, 0.64, 1);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.js .reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Hero entrance (CSS-only, transform-only: the LCP text paints immediately) */
+.rise {
+  animation: rise 0.7s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+  animation-delay: var(--d, 0ms);
+}
+
+/* ══ Easter egg confetti ════════════════════════════════════════════════ */
+.confetti-bit {
+  position: fixed;
+  top: -12px;
+  width: 8px;
+  height: 12px;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 100;
+  animation: confetti-fall var(--dur, 2.4s) cubic-bezier(0.3, 0.6, 0.4, 1) forwards;
+}
+
+/* ══ Dialogs (palette + project inspector) ══════════════════════════════ */
+dialog::backdrop {
+  background: rgba(23, 20, 12, 0.45);
+  backdrop-filter: blur(2px);
+}
+dialog.palette[open] {
+  animation: pop 0.16s ease-out;
+}
+dialog.inspector[open] {
+  animation: slide-in 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (max-width: 767px) {
+  dialog.inspector[open] {
+    animation: sheet-up 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+/* ══ Keyframes ══════════════════════════════════════════════════════════ */
+@keyframes blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+@keyframes wire {
+  to {
+    background-position: 10px 0;
+  }
+}
+@keyframes rise {
+  from {
+    transform: translateY(14px);
+  }
+}
+@keyframes wobble {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(-4deg) scale(1.03);
+  }
+  75% {
+    transform: rotate(4deg) scale(1.03);
+  }
+}
+@keyframes confetti-fall {
+  to {
+    transform: translate3d(var(--dx, 0), 110vh, 0) rotate(var(--rot, 540deg));
+    opacity: 0.9;
+  }
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+}
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.98);
+  }
+}
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+  }
+}
+
+.wobble {
+  animation: wobble 0.45s ease;
+}
+
+/* ══ Reduced motion: keep it still ══════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0ms !important;
+  }
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+  }
+  .js .print {
+    clip-path: none;
+  }
+  .route-wire,
+  .caret::after,
+  .led[data-state="warn"] {
+    animation: none !important;
+  }
+}
+
+/* ══ Print: the plain view is the printable résumé ══════════════════════ */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+  }
+}
